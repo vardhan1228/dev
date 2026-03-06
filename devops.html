@@ -1,0 +1,2991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multicloud DevOps With AI - By Veera Sir</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0f1e;--surface:#111827;--surface2:#1a2540;--border:#1e3050;--text:#e2e8f0;--text2:#8da0bc;--accent:#f59e0b;--radius:14px;--radius-sm:8px}
+body{background:var(--bg);color:var(--text);font-family:'Syne',system-ui,sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,180,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,255,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+.topbar{position:fixed;top:0;left:0;right:0;height:58px;background:rgba(10,15,30,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 24px;z-index:999}
+.back-btn{display:none;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 16px;border-radius:20px;cursor:pointer;font-size:0.84rem;font-family:'Syne',sans-serif;transition:all 0.2s}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.back-btn.visible{display:flex}
+.topbar-title{display:none;font-size:0.95rem;font-weight:700;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.topbar-title.visible{display:block}
+#home{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:80px 24px 48px}
+.home-hero{text-align:center;margin-bottom:40px}
+.main-title{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:900;line-height:1.05;background:linear-gradient(135deg,#f59e0b,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-2px;margin-bottom:8px}
+.title-highlight{font-size:clamp(1.3rem,3vw,2.3rem);font-weight:800;background:linear-gradient(135deg,#22d3ee,#3b82f6,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.title-by{font-size:1rem;color:#94a3b8;margin:10px 0 4px;letter-spacing:2px}
+.title-by strong{color:#f59e0b}
+.title-sub{color:var(--text2);font-size:0.88rem;font-family:'JetBrains Mono',monospace}
+.search-box{display:block;width:min(500px,90%);margin:20px auto 0;padding:13px 22px;background:var(--surface2);border:1px solid var(--border);border-radius:30px;color:var(--text);font-size:0.95rem;font-family:'Syne',sans-serif;outline:none;transition:border 0.2s,box-shadow 0.2s}
+.search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(245,158,11,0.15)}
+.search-box::placeholder{color:var(--text2)}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.topic-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:transform 0.2s,border-color 0.25s,box-shadow 0.25s;display:flex;flex-direction:column;gap:8px}
+.topic-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 32px rgba(245,158,11,0.13)}
+.card-icon{font-size:1.8rem}
+.card-title{font-size:0.9rem;font-weight:700;line-height:1.3}
+.card-cat{font-size:0.67rem;font-weight:700;padding:3px 10px;border-radius:20px;width:fit-content;text-transform:uppercase;letter-spacing:0.5px}
+#topic-view{display:none;position:relative;z-index:1;max-width:980px;margin:0 auto;padding:76px 24px 56px}
+.topic-section{display:none}
+.topic-section.active{display:block}
+.topic-header{display:flex;align-items:center;gap:18px;margin-bottom:28px;padding:24px;border-radius:var(--radius);border:1px solid var(--border)}
+.topic-icon-lg{font-size:2.6rem}
+.topic-header-text h2{font-size:clamp(1.2rem,3vw,1.75rem);font-weight:900}
+.tag{display:inline-block;background:rgba(255,255,255,0.08);color:#e2e8f0;font-size:0.72rem;padding:4px 12px;border-radius:20px;margin-top:6px;font-weight:700;letter-spacing:0.5px}
+.topic-body{display:flex;flex-direction:column;gap:22px}
+.topic-body h3{font-size:1.08rem;font-weight:800;margin:4px 0 2px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.topic-body p,.topic-body li{color:var(--text2);line-height:1.8;font-size:0.92rem}
+.topic-body ul{padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.topic-body strong{color:var(--text)}
+.arch-box{background:#060b18;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius-sm);overflow:hidden}
+.arch-title{background:rgba(245,158,11,0.1);padding:9px 16px;font-size:0.76rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace}
+.arch-box pre{background:transparent;border:none;border-radius:0;padding:16px;overflow-x:auto;font-size:0.77rem;line-height:1.7;color:#7dd3fc;font-family:'JetBrains Mono',monospace}
+pre{background:#060b18;border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;overflow-x:auto;font-size:0.79rem;line-height:1.7;color:#7dd3fc;font-family:'JetBrains Mono',monospace}
+.table-wrap{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:0.85rem}
+th{background:var(--surface2);padding:11px 14px;text-align:left;font-weight:800;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.6}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.compare-grid.three{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.compare-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px}
+.compare-card h4{margin-bottom:10px;font-size:0.9rem;font-weight:800;color:var(--text)}
+.compare-card ul{padding-left:16px}
+.compare-card li{color:var(--text2);font-size:0.84rem;line-height:1.75}
+.tip-box{background:rgba(59,130,246,0.1);border-left:3px solid #3b82f6;padding:14px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2);font-size:0.88rem;line-height:1.7}
+.warn-box{background:rgba(239,68,68,0.1);border-left:3px solid #ef4444;padding:14px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2);font-size:0.88rem;line-height:1.7}
+.success-box{background:rgba(16,185,129,0.1);border-left:3px solid #10b981;padding:14px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--text2);font-size:0.88rem;line-height:1.7}
+.success-box ul{padding-left:16px}
+code{background:var(--surface2);padding:2px 7px;border-radius:4px;font-size:0.81em;color:#7dd3fc;font-family:'JetBrains Mono',monospace}
+.home-link{display:inline-block;margin-bottom:24px;color:var(--accent);font-size:0.88rem;text-decoration:none;font-family:'JetBrains Mono',monospace;border:1px solid rgba(245,158,11,0.3);padding:6px 14px;border-radius:6px}
+.home-link:hover{background:rgba(245,158,11,0.1)}
+footer{position:relative;z-index:1;background:linear-gradient(135deg,#0a0f1e,#111827);border-top:1px solid #1e3050;text-align:center;padding:40px 20px;margin-top:60px}
+.footer-inner{display:flex;flex-direction:column;align-items:center;gap:10px}
+.footer-title{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;background:linear-gradient(135deg,#f59e0b,#f97316,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-by{color:#94a3b8;font-size:0.95rem}
+.footer-by strong{color:#f59e0b}
+.footer-copy{color:#475569;font-size:0.78rem;font-family:'JetBrains Mono',monospace}
+@media(max-width:600px){#home,#topic-view{padding-left:14px;padding-right:14px}.topic-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}}
+
+/* Topic color themes */
+#devops-fundamentals .topic-header{background:linear-gradient(135deg,#1e3a5f,#0a0f1e);border-color:#3b82f6}
+#devops-fundamentals .topic-body h3{color:#60a5fa}
+#shell-scripting .topic-header{background:linear-gradient(135deg,#3d0a2e,#0a0f1e);border-color:#ec4899}
+#shell-scripting .topic-body h3{color:#f9a8d4}
+#web-servers .topic-header{background:linear-gradient(135deg,#3d1a00,#0a0f1e);border-color:#f97316}
+#web-servers .topic-body h3{color:#fdba74}
+#git-intro .topic-header,#git-repos .topic-header,#git-setup .topic-header,#git-commands .topic-header,#git-remotes .topic-header,#git-branching .topic-header{background:linear-gradient(135deg,#0a3320,#0a0f1e);border-color:#10b981}
+#git-intro .topic-body h3,#git-repos .topic-body h3,#git-setup .topic-body h3,#git-commands .topic-body h3,#git-remotes .topic-body h3,#git-branching .topic-body h3{color:#6ee7b7}
+#maven .topic-header{background:linear-gradient(135deg,#3d2800,#0a0f1e);border-color:#f59e0b}
+#maven .topic-body h3{color:#fcd34d}
+#sonarqube .topic-header{background:linear-gradient(135deg,#002d3d,#0a0f1e);border-color:#06b6d4}
+#sonarqube .topic-body h3{color:#67e8f9}
+#jenkins-intro .topic-header,#jenkins-advanced .topic-header,#jenkins-security .topic-header,#jenkins-integrations .topic-header{background:linear-gradient(135deg,#1e0a3d,#0a0f1e);border-color:#8b5cf6}
+#jenkins-intro .topic-body h3,#jenkins-advanced .topic-body h3,#jenkins-security .topic-body h3,#jenkins-integrations .topic-body h3{color:#c4b5fd}
+#gitlab-cicd .topic-header,#github-actions .topic-header{background:linear-gradient(135deg,#25005e,#0a0f1e);border-color:#a855f7}
+#gitlab-cicd .topic-body h3,#github-actions .topic-body h3{color:#d8b4fe}
+#docker .topic-header{background:linear-gradient(135deg,#002030,#0a0f1e);border-color:#0ea5e9}
+#docker .topic-body h3{color:#7dd3fc}
+#jfrog .topic-header{background:linear-gradient(135deg,#002525,#0a0f1e);border-color:#14b8a6}
+#jfrog .topic-body h3{color:#5eead4}
+#kubernetes-intro .topic-header,#kubernetes-deployments .topic-header,#kubernetes-advanced .topic-header{background:linear-gradient(135deg,#3d0000,#0a0f1e);border-color:#ef4444}
+#kubernetes-intro .topic-body h3,#kubernetes-deployments .topic-body h3,#kubernetes-advanced .topic-body h3{color:#fca5a5}
+#argocd .topic-header{background:linear-gradient(135deg,#0a2d0a,#0a0f1e);border-color:#22c55e}
+#argocd .topic-body h3{color:#86efac}
+#grafana .topic-header{background:linear-gradient(135deg,#3d2800,#0a0f1e);border-color:#f59e0b}
+#grafana .topic-body h3{color:#fcd34d}
+#ansible-intro .topic-header,#ansible-inventory .topic-header,#ansible-playbooks .topic-header{background:linear-gradient(135deg,#0e0e3d,#0a0f1e);border-color:#6366f1}
+#ansible-intro .topic-body h3,#ansible-inventory .topic-body h3,#ansible-playbooks .topic-body h3{color:#a5b4fc}
+#terraform-intro .topic-header,#terraform-basics .topic-header,#terraform-modules .topic-header,#terraform-state .topic-header,#terraform-best .topic-header,#opentofu .topic-header{background:linear-gradient(135deg,#1a2d00,#0a0f1e);border-color:#84cc16}
+#terraform-intro .topic-body h3,#terraform-basics .topic-body h3,#terraform-modules .topic-body h3,#terraform-state .topic-body h3,#terraform-best .topic-body h3,#opentofu .topic-body h3{color:#bef264}
+#python-devops .topic-header{background:linear-gradient(135deg,#3d0a2e,#0a0f1e);border-color:#ec4899}
+#python-devops .topic-body h3{color:#f9a8d4}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back-btn" id="backBtn" onclick="goHome()">&#8592; Home</button>
+  <span class="topbar-title" id="topbarTitle"></span>
+</div>
+
+<!-- HOME -->
+<div id="home">
+  <div class="home-hero">
+    <button class="back-btn visible" onclick="window.location.href='index.html'" style="margin-bottom: 20px;">← Back to Home</button>
+    <h1 class="main-title">Multicloud DevOps<br><span class="title-highlight">With AI</span></h1>
+    <p class="title-by">By <strong>Veera Sir</strong></p>
+    <p class="title-sub">34 Topics — Complete Notes with Architecture &amp; Deep Theory</p>
+    <input class="search-box" id="searchBox" type="text" placeholder="Search topics..." oninput="filterCards(this.value)">
+  </div>
+  <div class="topic-grid" id="topicGrid">
+    <div class="topic-card" onclick="showTopic('devops-fundamentals','🚀 DevOps Fundamentals')"><span class="card-icon">🚀</span><span class="card-title">DevOps Fundamentals</span><span class="card-cat" style="background:#3b82f622;color:#3b82f6">Fundamentals</span></div>
+    <div class="topic-card" onclick="showTopic('shell-scripting','💻 Shell Scripting')"><span class="card-icon">💻</span><span class="card-title">Shell Scripting</span><span class="card-cat" style="background:#ec489922;color:#ec4899">Scripting</span></div>
+    <div class="topic-card" onclick="showTopic('web-servers','🌐 Web Servers')"><span class="card-icon">🌐</span><span class="card-title">Web Servers</span><span class="card-cat" style="background:#f9731622;color:#f97316">Infrastructure</span></div>
+    <div class="topic-card" onclick="showTopic('git-intro','🌿 Git Introduction')"><span class="card-icon">🌿</span><span class="card-title">Git Introduction</span><span class="card-cat" style="background:#10b98122;color:#10b981">Version Control</span></div>
+    <div class="topic-card" onclick="showTopic('git-repos','📦 Git Repositories')"><span class="card-icon">📦</span><span class="card-title">Git Repositories</span><span class="card-cat" style="background:#10b98122;color:#10b981">Version Control</span></div>
+    <div class="topic-card" onclick="showTopic('git-setup','⚙️ Git Setup')"><span class="card-icon">⚙️</span><span class="card-title">Git Setup</span><span class="card-cat" style="background:#10b98122;color:#10b981">Version Control</span></div>
+    <div class="topic-card" onclick="showTopic('git-commands','🔧 Git Commands')"><span class="card-icon">🔧</span><span class="card-title">Git Commands</span><span class="card-cat" style="background:#10b98122;color:#10b981">Version Control</span></div>
+    <div class="topic-card" onclick="showTopic('git-remotes','🔗 Git Remotes')"><span class="card-icon">🔗</span><span class="card-title">Git Remotes</span><span class="card-cat" style="background:#10b98122;color:#10b981">Version Control</span></div>
+    <div class="topic-card" onclick="showTopic('git-branching','🌲 Branching & Merging')"><span class="card-icon">🌲</span><span class="card-title">Branching &amp; Merging</span><span class="card-cat" style="background:#10b98122;color:#10b981">Version Control</span></div>
+    <div class="topic-card" onclick="showTopic('maven','🏗️ Maven Build Tool')"><span class="card-icon">🏗️</span><span class="card-title">Maven Build Tool</span><span class="card-cat" style="background:#f59e0b22;color:#f59e0b">Build Tools</span></div>
+    <div class="topic-card" onclick="showTopic('sonarqube','🔍 SonarQube')"><span class="card-icon">🔍</span><span class="card-title">SonarQube</span><span class="card-cat" style="background:#06b6d422;color:#06b6d4">Code Quality</span></div>
+    <div class="topic-card" onclick="showTopic('jenkins-intro','🤖 Jenkins Introduction')"><span class="card-icon">🤖</span><span class="card-title">Jenkins Introduction</span><span class="card-cat" style="background:#8b5cf622;color:#8b5cf6">CI/CD</span></div>
+    <div class="topic-card" onclick="showTopic('jenkins-advanced','⚡ Jenkins Advanced')"><span class="card-icon">⚡</span><span class="card-title">Jenkins Advanced</span><span class="card-cat" style="background:#8b5cf622;color:#8b5cf6">CI/CD</span></div>
+    <div class="topic-card" onclick="showTopic('jenkins-security','🔒 Jenkins Security')"><span class="card-icon">🔒</span><span class="card-title">Jenkins Security &amp; Plugins</span><span class="card-cat" style="background:#8b5cf622;color:#8b5cf6">CI/CD</span></div>
+    <div class="topic-card" onclick="showTopic('jenkins-integrations','🔌 Jenkins Integrations')"><span class="card-icon">🔌</span><span class="card-title">Jenkins Integrations</span><span class="card-cat" style="background:#8b5cf622;color:#8b5cf6">CI/CD</span></div>
+    <div class="topic-card" onclick="showTopic('gitlab-cicd','🦊 GitLab CI/CD')"><span class="card-icon">🦊</span><span class="card-title">GitLab CI/CD</span><span class="card-cat" style="background:#a855f722;color:#a855f7">CI/CD Pipelines</span></div>
+    <div class="topic-card" onclick="showTopic('github-actions','🐙 GitHub Actions')"><span class="card-icon">🐙</span><span class="card-title">GitHub Actions</span><span class="card-cat" style="background:#a855f722;color:#a855f7">CI/CD Pipelines</span></div>
+    <div class="topic-card" onclick="showTopic('docker','🐳 Docker')"><span class="card-icon">🐳</span><span class="card-title">Docker</span><span class="card-cat" style="background:#0ea5e922;color:#0ea5e9">Containerization</span></div>
+    <div class="topic-card" onclick="showTopic('jfrog','📦 JFrog Artifact Mgmt')"><span class="card-icon">📦</span><span class="card-title">JFrog Artifact Management</span><span class="card-cat" style="background:#14b8a622;color:#14b8a6">Artifact Mgmt</span></div>
+    <div class="topic-card" onclick="showTopic('kubernetes-intro','☸️ Kubernetes Introduction')"><span class="card-icon">☸️</span><span class="card-title">Kubernetes Introduction</span><span class="card-cat" style="background:#ef444422;color:#ef4444">Orchestration</span></div>
+    <div class="topic-card" onclick="showTopic('kubernetes-deployments','🚢 Kubernetes Deployments')"><span class="card-icon">🚢</span><span class="card-title">Kubernetes Deployments</span><span class="card-cat" style="background:#ef444422;color:#ef4444">Orchestration</span></div>
+    <div class="topic-card" onclick="showTopic('kubernetes-advanced','🎯 Kubernetes Advanced')"><span class="card-icon">🎯</span><span class="card-title">Kubernetes Advanced</span><span class="card-cat" style="background:#ef444422;color:#ef4444">Orchestration</span></div>
+    <div class="topic-card" onclick="showTopic('argocd','🔄 ArgoCD GitOps')"><span class="card-icon">🔄</span><span class="card-title">ArgoCD GitOps</span><span class="card-cat" style="background:#22c55e22;color:#22c55e">GitOps</span></div>
+    <div class="topic-card" onclick="showTopic('grafana','📊 Grafana Monitoring')"><span class="card-icon">📊</span><span class="card-title">Grafana Monitoring</span><span class="card-cat" style="background:#f59e0b22;color:#f59e0b">Monitoring</span></div>
+    <div class="topic-card" onclick="showTopic('ansible-intro','🤝 Ansible Introduction')"><span class="card-icon">🤝</span><span class="card-title">Ansible Introduction</span><span class="card-cat" style="background:#6366f122;color:#6366f1">Config Mgmt</span></div>
+    <div class="topic-card" onclick="showTopic('ansible-inventory','📋 Ansible Inventory')"><span class="card-icon">📋</span><span class="card-title">Ansible Inventory &amp; Commands</span><span class="card-cat" style="background:#6366f122;color:#6366f1">Config Mgmt</span></div>
+    <div class="topic-card" onclick="showTopic('ansible-playbooks','📜 Ansible Playbooks')"><span class="card-icon">📜</span><span class="card-title">Ansible Playbooks</span><span class="card-cat" style="background:#6366f122;color:#6366f1">Config Mgmt</span></div>
+    <div class="topic-card" onclick="showTopic('terraform-intro','🏛️ Terraform Introduction')"><span class="card-icon">🏛️</span><span class="card-title">Terraform Introduction</span><span class="card-cat" style="background:#84cc1622;color:#84cc16">IaC</span></div>
+    <div class="topic-card" onclick="showTopic('terraform-basics','🔨 Terraform Basics')"><span class="card-icon">🔨</span><span class="card-title">Terraform Basics</span><span class="card-cat" style="background:#84cc1622;color:#84cc16">IaC</span></div>
+    <div class="topic-card" onclick="showTopic('terraform-modules','📦 Terraform Modules')"><span class="card-icon">📦</span><span class="card-title">Terraform Modules</span><span class="card-cat" style="background:#84cc1622;color:#84cc16">IaC</span></div>
+    <div class="topic-card" onclick="showTopic('terraform-state','🗄️ Terraform State')"><span class="card-icon">🗄️</span><span class="card-title">Terraform State &amp; Advanced</span><span class="card-cat" style="background:#84cc1622;color:#84cc16">IaC</span></div>
+    <div class="topic-card" onclick="showTopic('terraform-best','✅ Terraform Best Practices')"><span class="card-icon">✅</span><span class="card-title">Terraform Best Practices</span><span class="card-cat" style="background:#84cc1622;color:#84cc16">IaC</span></div>
+    <div class="topic-card" onclick="showTopic('opentofu','🟢 OpenTofu')"><span class="card-icon">🟢</span><span class="card-title">OpenTofu</span><span class="card-cat" style="background:#84cc1622;color:#84cc16">IaC</span></div>
+    <div class="topic-card" onclick="showTopic('python-devops','🐍 Python for DevOps')"><span class="card-icon">🐍</span><span class="card-title">Python for DevOps</span><span class="card-cat" style="background:#ec489922;color:#ec4899">Scripting</span></div>
+  </div>
+</div>
+
+<!-- TOPIC VIEW -->
+<div id="topic-view">
+
+<!-- 1. DevOps Fundamentals -->
+<div class="topic-section" id="devops-fundamentals">
+<div class="topic-header"><div class="topic-icon-lg">🚀</div><div class="topic-header-text"><h2>DevOps Fundamentals</h2><span class="tag">Fundamentals</span></div></div>
+<div class="topic-body">
+<h3>What is DevOps?</h3>
+<p>DevOps is a <strong>cultural philosophy and technical movement</strong> that bridges the gap between software Development (Dev) and IT Operations (Ops). Before DevOps, developers wrote code and "threw it over the wall" to Ops teams, causing slow releases, blame culture, and frequent production failures. DevOps breaks these walls by establishing shared ownership, automated pipelines, and continuous feedback loops across all stages of the software lifecycle.</p>
+<p>The term was coined by <strong>Patrick Debois in 2009</strong>. It is built on the <strong>CAMS framework</strong>: <strong>C</strong>ulture (shared responsibility), <strong>A</strong>utomation (eliminate manual toil), <strong>M</strong>easurement (DORA metrics), and <strong>S</strong>haring (knowledge across teams). DevOps is not a tool — it's a mindset that enables organizations to deliver software faster, more reliably, and more securely.</p>
+<div class="arch-box"><div class="arch-title">DevOps Infinity Loop — Full Pipeline Architecture</div><pre>
+   Developer Workstation
+         | git push
+         v
+   ┌─────────────────────────────────────────────────────────┐
+   │                 CI/CD PIPELINE (Jenkins / GitHub Actions)│
+   │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────────┐ │
+   │  │PLAN  │→ │CODE  │→ │BUILD │→ │TEST  │→ │ RELEASE  │ │
+   │  │Jira  │  │Git   │  │Maven │  │JUnit │  │ JFrog    │ │
+   │  └──────┘  └──────┘  └──────┘  └──────┘  └──────────┘ │
+   └─────────────────────────────┬───────────────────────────┘
+                                 │ artifact
+                                 v
+   ┌─────────────────────────────────────────────────────────┐
+   │                    CD / DEPLOY PHASE                    │
+   │  DEV  ──auto──▶  STAGING ──integration tests──▶  PROD  │
+   │                               (manual gate)            │
+   └─────────────────────────────┬───────────────────────────┘
+                                 │
+                                 v
+   ┌─────────────────────────────────────────────────────────┐
+   │             OBSERVE & MONITOR (Feedback Loop)           │
+   │  Prometheus → Grafana → Alertmanager → Slack/PagerDuty  │
+   │  ELK Stack (Logs) → Jaeger (Traces) → On-call team      │
+   └─────────────────────────────────────────────────────────┘</pre></div>
+
+<h3>Traditional IT vs DevOps</h3>
+<div class="table-wrap"><table>
+<tr><th>Aspect</th><th>Traditional IT</th><th>DevOps</th></tr>
+<tr><td>Release Frequency</td><td>Monthly/Quarterly</td><td>Multiple times per day</td></tr>
+<tr><td>Lead Time</td><td>Weeks to months</td><td>Hours to days</td></tr>
+<tr><td>Team Structure</td><td>Dev, QA, Ops silos</td><td>Cross-functional squads</td></tr>
+<tr><td>Infrastructure</td><td>Manual, long-lived servers</td><td>IaC, immutable infrastructure</td></tr>
+<tr><td>Failure Recovery</td><td>Hours to days (blame)</td><td>Minutes (blameless retro)</td></tr>
+<tr><td>Change Failure Rate</td><td>30–50%</td><td>0–15%</td></tr>
+<tr><td>Testing</td><td>Manual, end of cycle</td><td>Automated, shift-left</td></tr>
+<tr><td>Security</td><td>Added at the end</td><td>Shift-left DevSecOps</td></tr>
+</table></div>
+
+<h3>DORA Metrics — Measuring DevOps Performance</h3>
+<p>Google's DevOps Research and Assessment (DORA) team identified four key metrics that distinguish elite engineering teams from low performers. These are the <strong>only 4 metrics you need</strong> to understand your pipeline health:</p>
+<div class="table-wrap"><table>
+<tr><th>Metric</th><th>Elite</th><th>Low Performer</th><th>Meaning</th></tr>
+<tr><td>Deployment Frequency</td><td>Multiple/day</td><td>Once per 6 months</td><td>How often code reaches production</td></tr>
+<tr><td>Lead Time for Changes</td><td>&lt;1 hour</td><td>6+ months</td><td>Commit → production time</td></tr>
+<tr><td>Change Failure Rate</td><td>&lt;5%</td><td>46–60%</td><td>% deployments causing incidents</td></tr>
+<tr><td>Mean Time to Recovery</td><td>&lt;1 hour</td><td>&gt;6 months</td><td>Time to restore after failure</td></tr>
+</table></div>
+
+<h3>DevOps Engineer Skills Map</h3>
+<div class="compare-grid three">
+<div class="compare-card"><h4>🔧 Technical Skills</h4><ul><li>Linux admin, Shell scripting</li><li>Git branching strategies</li><li>CI/CD: Jenkins, GitLab, GH Actions</li><li>Docker, Kubernetes, Helm</li><li>Cloud: AWS / Azure / GCP</li><li>IaC: Terraform, Ansible</li><li>Monitoring: Prometheus, Grafana</li></ul></div>
+<div class="compare-card"><h4>📋 Process Skills</h4><ul><li>Agile / Scrum ceremonies</li><li>Release and change management</li><li>Incident response, runbooks</li><li>SLO / SLA / SLI definition</li><li>Blameless post-mortems</li><li>Capacity planning</li></ul></div>
+<div class="compare-card"><h4>🔐 DevSecOps</h4><ul><li>Shift-left security testing</li><li>SAST/DAST in pipelines</li><li>Container scanning (Trivy)</li><li>Secret management (Vault)</li><li>IAM and least privilege</li><li>OWASP Top 10 awareness</li></ul></div>
+</div>
+<div class="tip-box"><strong>💡 Key Principle:</strong> DevOps is about shortening feedback loops at every stage. The faster a developer knows their code is broken or insecure, the cheaper it is to fix. Automate everything that can be automated, and measure everything that matters.</div>
+</div>
+</div>
+
+<!-- 2. Shell Scripting -->
+<div class="topic-section" id="shell-scripting">
+<div class="topic-header"><div class="topic-icon-lg">💻</div><div class="topic-header-text"><h2>Shell Scripting</h2><span class="tag">Scripting</span></div></div>
+<div class="topic-body">
+<h3>Why Shell Scripting in DevOps?</h3>
+<p>Shell scripting is the <strong>foundational automation skill</strong> for every DevOps engineer. A shell (bash, sh, zsh) is the command interpreter that lets you interact with the Linux kernel. Shell scripts chain together commands, control flow, and system calls to automate repetitive tasks — from provisioning servers to deploying applications. Almost every CI/CD pipeline, cron job, and server automation uses shell scripting under the hood.</p>
+<p>Bash (Bourne Again Shell) is the most common shell in Linux and is used in AWS EC2, Docker containers, and Kubernetes init containers. Understanding shell scripting saves hours of manual work and is essential for writing Jenkins pipelines, Docker entrypoints, and Kubernetes scripts.</p>
+<div class="arch-box"><div class="arch-title">Shell Script Execution Architecture</div><pre>
+  User types command / Script file (.sh)
+            |
+            v
+       ┌─────────┐
+       │  SHELL  │  bash / sh / zsh / fish
+       │ (Parser)│  Reads, tokenizes, expands variables
+       └────┬────┘
+            │
+    ┌───────┴────────┐
+    │                │
+    v                v
+ Built-in        External Command
+ Commands        (fork + exec)
+ (cd, echo,      /bin/ls, /usr/bin/curl
+  export, alias)  spawns child process
+            |
+            v
+       Linux Kernel  (system calls: read, write, fork, exec)
+            |
+            v
+       Hardware / File System / Network</pre></div>
+
+<h3>Script Structure & Shebang</h3>
+<pre>#!/bin/bash                    # Shebang: tells OS which interpreter to use
+# Script: deploy.sh            # Comments start with #
+set -e                         # Exit immediately on error
+set -o pipefail                # Catch pipe errors too
+
+DEPLOY_ENV=${1:-"dev"}         # First argument, default = dev
+APP_NAME="myapp"
+TIMESTAMP=$(date +%Y%m%d%H%M%S)
+
+echo "Deploying $APP_NAME to $DEPLOY_ENV at $TIMESTAMP"</pre>
+
+<h3>Variables, Conditionals, Loops</h3>
+<pre># Variables
+NAME="DevOps"
+echo "Hello $NAME"
+echo "Length: ${#NAME}"        # String length
+
+# Conditionals
+if [ "$DEPLOY_ENV" == "prod" ]; then
+  echo "Production deployment - applying approval gate"
+elif [ "$DEPLOY_ENV" == "staging" ]; then
+  echo "Staging deployment"
+else
+  echo "Dev deployment - skipping approvals"
+fi
+
+# For loop
+for SERVER in web1 web2 web3; do
+  echo "Deploying to $SERVER"
+  ssh ubuntu@$SERVER "sudo systemctl restart nginx"
+done
+
+# While loop
+COUNT=0
+while [ $COUNT -lt 5 ]; do
+  echo "Health check attempt $COUNT"
+  curl -sf http://localhost:8080/health && break
+  COUNT=$((COUNT + 1))
+  sleep 3
+done</pre>
+
+<h3>Functions & Error Handling</h3>
+<pre>function check_service() {
+  local SERVICE=$1
+  if systemctl is-active --quiet $SERVICE; then
+    echo "✅ $SERVICE is running"
+    return 0
+  else
+    echo "❌ $SERVICE is NOT running"
+    return 1
+  fi
+}
+
+# Trap errors and cleanup
+trap 'echo "Error on line $LINENO"; cleanup' ERR
+
+function cleanup() {
+  rm -f /tmp/deploy.lock
+  exit 1
+}
+
+check_service nginx || cleanup</pre>
+
+<h3>Common DevOps Shell Tasks</h3>
+<div class="compare-grid">
+<div class="compare-card"><h4>📁 File Operations</h4><ul><li><code>find /app -name "*.log" -mtime +7 -delete</code></li><li><code>tar -czf backup.tar.gz /var/www</code></li><li><code>rsync -avz ./dist/ user@server:/var/www</code></li><li><code>sed -i 's/OLD/NEW/g' config.txt</code></li><li><code>awk '{print $1,$3}' access.log</code></li></ul></div>
+<div class="compare-card"><h4>🌐 Network & Process</h4><ul><li><code>netstat -tlnp | grep 8080</code></li><li><code>curl -o /dev/null -s -w "%{http_code}" URL</code></li><li><code>ps aux | grep java | grep -v grep</code></li><li><code>kill -9 $(lsof -t -i:8080)</code></li><li><code>nohup ./server.sh &gt; log.txt &amp;</code></li></ul></div>
+</div>
+<div class="success-box"><strong>Best Practices:</strong><ul><li>Always use <code>set -e</code> and <code>set -o pipefail</code> at the top</li><li>Quote all variables: <code>"$VAR"</code> to handle spaces</li><li>Use functions to avoid code repetition</li><li>Add logging with timestamps: <code>echo "[$(date)] Starting deploy"</code></li><li>Test scripts with <code>bash -n script.sh</code> (syntax check) and <code>shellcheck script.sh</code></li></ul></div>
+</div>
+</div>
+
+<!-- 3. Web Servers -->
+<div class="topic-section" id="web-servers">
+<div class="topic-header"><div class="topic-icon-lg">🌐</div><div class="topic-header-text"><h2>Web Servers</h2><span class="tag">Infrastructure</span></div></div>
+<div class="topic-body">
+<h3>What is a Web Server?</h3>
+<p>A <strong>web server</strong> is software that accepts HTTP/HTTPS requests from clients (browsers, APIs, mobile apps) and serves responses — either static files (HTML, CSS, images) or by proxying requests to application servers (Node.js, Python, Java). In DevOps, web servers like <strong>Nginx</strong> and <strong>Apache</strong> are critical for reverse proxying, load balancing, SSL termination, and serving microservices.</p>
+<p><strong>Nginx</strong> (Engine-X) uses an <strong>event-driven, non-blocking</strong> architecture that handles thousands of concurrent connections with minimal memory. <strong>Apache</strong> uses a <strong>process/thread-per-connection</strong> model that is more flexible with .htaccess but less performant at scale. In modern DevOps, Nginx dominates for reverse proxy and Kubernetes Ingress controllers.</p>
+<div class="arch-box"><div class="arch-title">Nginx Reverse Proxy + Load Balancer Architecture</div><pre>
+  Internet
+     │
+     │ HTTPS :443
+     v
+  ┌─────────────────────────────────────┐
+  │         NGINX (Reverse Proxy)       │
+  │  - SSL/TLS Termination (Let's Encrypt│
+  │  - Gzip Compression                 │
+  │  - Rate Limiting                    │
+  │  - Static File Caching              │
+  └────────────────┬────────────────────┘
+                   │ HTTP :8080 (internal)
+         ┌─────────┼─────────┐
+         │         │         │
+         v         v         v
+    ┌────────┐ ┌────────┐ ┌────────┐
+    │App  #1 │ │App  #2 │ │App  #3 │  (Node.js / Java / Python)
+    │:3000   │ │:3001   │ │:3002   │
+    └────────┘ └────────┘ └────────┘
+         │         │         │
+         └─────────┴─────────┘
+                   │
+                   v
+             ┌──────────┐
+             │ Database │  (PostgreSQL / MySQL / MongoDB)
+             └──────────┘</pre></div>
+
+<h3>Nginx Key Configuration</h3>
+<pre># /etc/nginx/sites-available/myapp.conf
+
+upstream backend {
+    least_conn;                         # Load balancing: least connections
+    server 10.0.1.10:8080 weight=3;    # Higher weight = more traffic
+    server 10.0.1.11:8080 weight=1;
+    server 10.0.1.12:8080 backup;      # Only used if others are down
+}
+
+server {
+    listen 443 ssl http2;
+    server_name myapp.example.com;
+
+    ssl_certificate     /etc/ssl/certs/myapp.crt;
+    ssl_certificate_key /etc/ssl/private/myapp.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+    add_header Strict-Transport-Security "max-age=31536000";
+
+    # Static files - serve directly (fast)
+    location /static/ {
+        root /var/www/myapp;
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # API requests - proxy to backend
+    location /api/ {
+        proxy_pass http://backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_connect_timeout 10s;
+        proxy_read_timeout 30s;
+    }
+
+    # Rate limiting
+    limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+    location /api/login {
+        limit_req zone=api burst=5 nodelay;
+        proxy_pass http://backend;
+    }
+}</pre>
+
+<h3>Nginx vs Apache Comparison</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Nginx</th><th>Apache</th></tr>
+<tr><td>Architecture</td><td>Event-driven, async</td><td>Process/thread per request</td></tr>
+<tr><td>Concurrency</td><td>10,000+ connections easily</td><td>Struggles above 1000</td></tr>
+<tr><td>Memory Usage</td><td>Very low (~2.5MB per worker)</td><td>Higher (forking model)</td></tr>
+<tr><td>Config Style</td><td>Centralized nginx.conf</td><td>.htaccess per directory</td></tr>
+<tr><td>PHP Support</td><td>Requires PHP-FPM</td><td>Built-in mod_php</td></tr>
+<tr><td>SSL Termination</td><td>Excellent</td><td>Good</td></tr>
+<tr><td>K8s Ingress</td><td>Official ingress controller</td><td>Available but less common</td></tr>
+<tr><td>Best For</td><td>Reverse proxy, static, LB</td><td>Legacy apps, shared hosting</td></tr>
+</table></div>
+
+<h3>Common Web Server Commands</h3>
+<pre># Nginx
+sudo nginx -t                         # Test config syntax
+sudo systemctl reload nginx           # Hot reload (no downtime)
+sudo systemctl restart nginx          # Full restart
+sudo tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/nginx/error.log
+
+# Apache
+sudo apachectl configtest             # Test config
+sudo systemctl reload apache2
+sudo a2ensite myapp.conf              # Enable site
+sudo a2enmod ssl rewrite proxy        # Enable modules</pre>
+</div>
+</div>
+
+<!-- 4. Git Introduction -->
+<div class="topic-section" id="git-intro">
+<div class="topic-header"><div class="topic-icon-lg">🌿</div><div class="topic-header-text"><h2>Git Introduction</h2><span class="tag">Version Control</span></div></div>
+<div class="topic-body">
+<h3>What is Git and Why It Matters</h3>
+<p>Git is a <strong>distributed version control system (DVCS)</strong> created by Linus Torvalds in 2005 to manage the Linux kernel source. Unlike centralized VCS (like SVN), every developer has a <strong>full copy of the entire repository</strong> including its history — on their local machine. This means you can commit, branch, diff, and log completely offline.</p>
+<p>Git tracks changes as <strong>snapshots</strong> (not diffs). Each commit stores a complete snapshot of all tracked files at that point in time. This makes Git operations like branching, merging, and reverting extremely fast. Git is the foundation of every modern CI/CD pipeline — no code gets built or deployed without going through Git first.</p>
+<div class="arch-box"><div class="arch-title">Git Distributed Architecture</div><pre>
+  Developer A (Local Repo)          Developer B (Local Repo)
+  ┌─────────────────────┐           ┌─────────────────────┐
+  │ Working Directory   │           │ Working Directory   │
+  │ Staging Area (Index)│           │ Staging Area (Index)│
+  │ Local Repository    │           │ Local Repository    │
+  │  (full history)     │           │  (full history)     │
+  └──────────┬──────────┘           └──────────┬──────────┘
+             │ git push                        │ git pull
+             │                                 │
+             v                                 v
+        ┌─────────────────────────────────────────┐
+        │       REMOTE REPOSITORY (GitHub/GitLab) │
+        │  main ──── feature/* ──── release/*     │
+        │  (Central sync point, not single source)│
+        └─────────────────────────────────────────┘</pre></div>
+
+<h3>Git Object Model</h3>
+<p>Everything in Git is stored as one of four object types in the <code>.git/objects</code> directory. Understanding this helps you understand what's happening under the hood:</p>
+<div class="table-wrap"><table>
+<tr><th>Object Type</th><th>What It Stores</th><th>Example</th></tr>
+<tr><td><strong>Blob</strong></td><td>File content (no filename)</td><td>Contents of main.py</td></tr>
+<tr><td><strong>Tree</strong></td><td>Directory listing (filenames + blob refs)</td><td>List of files in /src</td></tr>
+<tr><td><strong>Commit</strong></td><td>Snapshot pointer + metadata (author, message, parent)</td><td>git log entry</td></tr>
+<tr><td><strong>Tag</strong></td><td>Named pointer to a commit</td><td>v1.0.0 release tag</td></tr>
+</table></div>
+
+<h3>Three Areas of Git</h3>
+<pre>  Working Directory   ──git add──▶   Staging Area   ──git commit──▶   Local Repo
+  (untracked/modified files)       (index/.git/index)               (.git/objects)
+          ▲                                                                 │
+          └────────────────── git checkout / git restore ──────────────────┘
+                                                                           │
+                                                               git push ───▶ Remote</pre>
+</div>
+</div>
+
+<!-- 5. Git Repositories -->
+<div class="topic-section" id="git-repos">
+<div class="topic-header"><div class="topic-icon-lg">📦</div><div class="topic-header-text"><h2>Git Repositories</h2><span class="tag">Version Control</span></div></div>
+<div class="topic-body">
+<h3>Types of Git Repositories</h3>
+<p>A Git repository is a <strong>data store</strong> containing your project's files and the entire history of changes. There are two types: <strong>Local repositories</strong> (on your machine, full history in <code>.git/</code>) and <strong>Remote repositories</strong> (hosted on GitHub, GitLab, Bitbucket — used as sync points for teams).</p>
+<p>A <strong>bare repository</strong> is a special type used for remote servers — it contains only the Git metadata (no working directory). When you push to GitHub, you're pushing to a bare repo. A <strong>fork</strong> is a server-side clone of a repo under your own account — used for open-source contribution workflows.</p>
+<div class="arch-box"><div class="arch-title">Repository Types & Workflow</div><pre>
+  git init myproject          git clone https://...
+       │                             │
+       v                             v
+  Local Repo (.git/)         Local Repo (.git/)    &lt;── full history cloned
+  ┌───────────────┐          ┌───────────────┐
+  │ .git/         │          │ .git/         │
+  │  ├ HEAD       │          │  ├ HEAD       │
+  │  ├ config     │          │  ├ config     │
+  │  ├ objects/   │          │  ├ objects/   │
+  │  ├ refs/      │          │  ├ refs/      │
+  │  └ index      │          │  └ index      │
+  └───────────────┘          └───────────────┘
+         │                          │
+         └──────── git push ────────▶
+                                    │
+                              Remote (GitHub)
+                              ┌─────────────┐
+                              │  Bare Repo  │  (no working tree)
+                              │  .git only  │
+                              └─────────────┘</pre></div>
+
+<h3>Creating and Managing Repos</h3>
+<pre># Create new repo locally
+git init my-devops-project
+cd my-devops-project
+
+# Clone existing remote repo
+git clone https://github.com/org/repo.git
+git clone git@github.com:org/repo.git          # SSH clone
+
+# Check repo status
+git status
+git log --oneline --graph --decorate --all     # Visual history
+
+# Remote management
+git remote -v                                  # Show remotes
+git remote add upstream https://original.repo  # Add upstream for forks
+git remote set-url origin https://new.url      # Change remote URL</pre>
+</div>
+</div>
+
+<!-- 6. Git Setup -->
+<div class="topic-section" id="git-setup">
+<div class="topic-header"><div class="topic-icon-lg">⚙️</div><div class="topic-header-text"><h2>Git Setup</h2><span class="tag">Version Control</span></div></div>
+<div class="topic-body">
+<h3>Configuring Git Correctly</h3>
+<p>Before using Git in a team, proper configuration ensures your commits are correctly attributed, your editor works, and you can authenticate with remote services. Git configuration has <strong>three scopes</strong>: <strong>system</strong> (all users on the machine), <strong>global</strong> (your user account), and <strong>local</strong> (specific repository). Local overrides global, which overrides system.</p>
+<div class="arch-box"><div class="arch-title">Git Config Hierarchy</div><pre>
+  /etc/gitconfig          ← System-wide (all users)
+       │
+  ~/.gitconfig            ← Global (your user)
+       │
+  .git/config             ← Local (this repo only — highest priority)
+
+  Resolution: Local > Global > System</pre></div>
+
+<h3>Essential Git Configuration</h3>
+<pre># Identity (required for commits)
+git config --global user.name "Your Name"
+git config --global user.email "you@company.com"
+
+# Default editor (for commit messages)
+git config --global core.editor "vim"          # or "code --wait" for VS Code
+
+# Default branch name
+git config --global init.defaultBranch main
+
+# Line endings (important for Windows/Linux teams)
+git config --global core.autocrlf input        # Linux/Mac: convert CRLF→LF on commit
+git config --global core.autocrlf true         # Windows: convert LF↔CRLF
+
+# Aliases (huge productivity boost)
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.lg "log --oneline --graph --decorate --all"
+git config --global alias.undo "reset HEAD~1 --mixed"
+
+# SSH Key setup for GitHub/GitLab
+ssh-keygen -t ed25519 -C "you@company.com"     # Generate key
+cat ~/.ssh/id_ed25519.pub                       # Copy to GitHub Settings → SSH Keys
+ssh -T git@github.com                           # Test connection</pre>
+
+<h3>.gitignore Best Practices</h3>
+<pre># .gitignore — tells git which files to never track
+# Generated files
+target/
+dist/
+build/
+*.class
+*.jar
+
+# Environment files (NEVER commit secrets!)
+.env
+.env.local
+*.env
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+node_modules/
+vendor/
+__pycache__/
+*.pyc</pre>
+<div class="warn-box"><strong>⚠️ Critical:</strong> Never commit <code>.env</code> files, passwords, API keys, or private SSH keys to Git. Use tools like <code>git-secrets</code>, <code>truffleHog</code>, or GitHub's secret scanning to detect accidental secret commits. Once committed and pushed, secrets must be rotated — the history is permanent.</div>
+</div>
+</div>
+
+<!-- 7. Git Commands -->
+<div class="topic-section" id="git-commands">
+<div class="topic-header"><div class="topic-icon-lg">🔧</div><div class="topic-header-text"><h2>Git Commands</h2><span class="tag">Version Control</span></div></div>
+<div class="topic-body">
+<h3>Core Git Workflow Commands</h3>
+<p>Git commands map to the <strong>three-area model</strong>: Working Directory → Staging Area → Local Repository → Remote. Mastering these commands is essential for daily DevOps work, including cherry-picking hotfixes, undoing mistakes, and bisecting bugs in production.</p>
+<div class="arch-box"><div class="arch-title">Git Command Flow Diagram</div><pre>
+  Untracked/Modified           Staged                   Committed              Remote
+  (Working Dir)             (Index)                  (Local Repo)           (GitHub)
+       │                       │                          │                     │
+       │──── git add ─────────▶│                          │                     │
+       │                       │──── git commit ─────────▶│                     │
+       │                       │                          │─── git push ────────▶│
+       │◀─── git restore ──────│                          │◀── git fetch ────────│
+       │                       │                          │◀── git pull ─────────│
+       │◀──────────── git checkout / git switch ──────────│                     │</pre></div>
+
+<h3>Daily Workflow Commands</h3>
+<pre># Stage and commit
+git add .                              # Stage all changes
+git add src/app.py                     # Stage specific file
+git add -p                             # Interactive staging (hunk by hunk)
+git commit -m "feat: add login API"    # Commit with message
+git commit --amend --no-edit           # Add to last commit without new message
+
+# View history and differences
+git log --oneline -10                  # Last 10 commits
+git log --author="Veera" --since="2024-01-01"
+git diff                               # Working dir vs staging
+git diff --staged                      # Staging vs last commit
+git show HEAD~2:src/app.py             # View file from 2 commits ago
+
+# Undoing changes
+git restore src/app.py                 # Discard working dir change
+git restore --staged src/app.py        # Unstage file
+git reset HEAD~1 --soft                # Undo last commit, keep staged
+git reset HEAD~1 --mixed               # Undo last commit, keep files
+git reset HEAD~1 --hard                # Undo last commit, DELETE changes
+git revert abc1234                     # Safe undo (creates new commit)
+
+# Stashing work-in-progress
+git stash push -m "WIP: login feature"
+git stash list
+git stash pop                          # Apply and remove stash
+git stash apply stash@{1}             # Apply specific stash
+
+# Finding bugs
+git bisect start
+git bisect bad HEAD
+git bisect good v1.0.0                 # Git binary-searches for bad commit
+git bisect run pytest tests/</pre>
+
+<h3>Power Commands</h3>
+<pre># Cherry-pick a specific commit to current branch
+git cherry-pick abc1234                # Apply one commit
+git cherry-pick abc1234..def5678       # Apply range of commits
+
+# Rewrite history (use with caution on shared branches)
+git rebase -i HEAD~5                   # Interactive rebase last 5 commits
+# Options: pick, squash, fixup, reword, drop, edit
+
+# Find who changed a line
+git blame src/app.py
+git blame -L 50,60 src/app.py          # Lines 50-60 only
+
+# Search across all commits
+git log -S "password_hash"             # Find commits touching this string
+git grep "TODO" $(git rev-list --all)  # Search ALL history</pre>
+</div>
+</div>
+
+<!-- 8. Git Remotes -->
+<div class="topic-section" id="git-remotes">
+<div class="topic-header"><div class="topic-icon-lg">🔗</div><div class="topic-header-text"><h2>Git Remotes</h2><span class="tag">Version Control</span></div></div>
+<div class="topic-body">
+<h3>Understanding Remotes</h3>
+<p>A <strong>remote</strong> in Git is a named reference to a repository hosted elsewhere — on GitHub, GitLab, Bitbucket, or your own server. The default remote after cloning is always called <strong>origin</strong>. In forked workflows, it's common to have two remotes: <strong>origin</strong> (your fork) and <strong>upstream</strong> (the original repo). Remotes allow teams to share code, collaborate, and trigger CI/CD pipelines.</p>
+<div class="arch-box"><div class="arch-title">Remote Tracking Architecture</div><pre>
+  Local Repository                    Remote (GitHub)
+  ┌───────────────────────────┐       ┌───────────────────────┐
+  │ refs/heads/main           │       │ refs/heads/main       │
+  │ refs/heads/feature/login  │       │ refs/heads/develop    │
+  │                           │       │                       │
+  │ refs/remotes/origin/main  │─────▶ │   (remote tracking)  │
+  │ refs/remotes/origin/dev   │       │                       │
+  └───────────────────────────┘       └───────────────────────┘
+         │
+         │ git fetch (updates refs/remotes/* without merging)
+         │ git pull  (fetch + merge/rebase into current branch)
+         │ git push  (upload local commits to remote)</pre></div>
+
+<h3>Remote Operations</h3>
+<pre># List and manage remotes
+git remote -v                          # Show all remotes with URLs
+git remote add origin git@github.com:user/repo.git
+git remote add upstream https://github.com/original/repo.git
+git remote rename origin backup
+git remote remove backup
+
+# Fetch vs Pull (important distinction!)
+git fetch origin                       # Download changes, DON'T merge
+git fetch --all                        # Fetch all remotes
+git pull origin main                   # fetch + merge (or rebase)
+git pull --rebase origin main          # fetch + rebase (cleaner history)
+
+# Push operations
+git push origin main                   # Push to remote main
+git push -u origin feature/login       # Push + set upstream tracking
+git push origin --delete old-branch    # Delete remote branch
+git push --force-with-lease            # Safe force push (checks remote state)
+git push origin v1.0.0                 # Push a tag
+
+# Sync fork with upstream
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main</pre>
+</div>
+</div>
+
+<!-- 9. Branching & Merging -->
+<div class="topic-section" id="git-branching">
+<div class="topic-header"><div class="topic-icon-lg">🌲</div><div class="topic-header-text"><h2>Branching &amp; Merging</h2><span class="tag">Version Control</span></div></div>
+<div class="topic-body">
+<h3>Git Branching — The Core of Collaboration</h3>
+<p>A Git branch is simply a <strong>lightweight movable pointer to a commit</strong>. Creating a branch costs almost nothing (just 41 bytes — a file containing the commit hash). This makes branching the primary mechanism for parallel development. Every feature, bug fix, hotfix, or release gets its own branch, isolated from the main codebase until it's ready.</p>
+<div class="arch-box"><div class="arch-title">GitFlow Branching Strategy Architecture</div><pre>
+  main ────●──────────────────────────────────────●──── (production)
+           │                                      │
+           │                               merge release
+           │                                      │
+  develop ─●────●──────●────────●─────────────────●──── (integration)
+                │      │        │
+            feature  feature  bugfix
+            /login   /search   /cart
+                │      │        │
+                ●──────●──────●─┘  (feature merged back to develop)
+
+  hotfix ──────────────────────────●───── (direct to main + develop)
+                                   │
+                              critical fix for prod</pre></div>
+
+<h3>Branch Commands</h3>
+<pre># Create and switch branches
+git branch feature/login               # Create branch
+git switch feature/login               # Switch to it
+git switch -c feature/signup           # Create + switch (shortcut)
+git branch -d feature/login            # Delete merged branch
+git branch -D feature/login            # Force delete (unmerged)
+
+# List branches
+git branch                             # Local branches
+git branch -r                          # Remote branches
+git branch -a                          # All branches
+git branch --merged main               # Branches merged into main</pre>
+
+<h3>Merging Strategies</h3>
+<pre># Regular merge (creates merge commit — preserves history)
+git checkout main
+git merge feature/login
+git merge --no-ff feature/login        # Always create merge commit
+
+# Squash merge (squash all feature commits into one)
+git merge --squash feature/login
+git commit -m "feat: add login feature (squashed)"
+
+# Rebase (rewrite history — linear, clean)
+git checkout feature/login
+git rebase main                        # Replay feature commits on top of main
+git checkout main
+git merge feature/login                # Fast-forward only</pre>
+
+<h3>Branching Strategies Comparison</h3>
+<div class="table-wrap"><table>
+<tr><th>Strategy</th><th>Branches</th><th>Best For</th><th>Release Model</th></tr>
+<tr><td>GitFlow</td><td>main, develop, feature/*, release/*, hotfix/*</td><td>Scheduled releases (apps, SaaS)</td><td>Versioned releases</td></tr>
+<tr><td>GitHub Flow</td><td>main + feature branches</td><td>Continuous delivery teams</td><td>Deploy on merge</td></tr>
+<tr><td>Trunk-Based</td><td>main only + short-lived branches</td><td>Very high-velocity teams</td><td>Feature flags</td></tr>
+<tr><td>GitLab Flow</td><td>main + environment branches</td><td>Teams with staging/prod envs</td><td>Environment promotion</td></tr>
+</table></div>
+<div class="tip-box"><strong>💡 Rule:</strong> Branches should be short-lived (1–3 days max). Long-lived branches create "merge hell." Use feature flags to merge incomplete features to main without activating them in production.</div>
+</div>
+</div>
+
+<!-- 10. Maven -->
+<div class="topic-section" id="maven">
+<div class="topic-header"><div class="topic-icon-lg">🏗️</div><div class="topic-header-text"><h2>Maven Build Tool</h2><span class="tag">Build Tools</span></div></div>
+<div class="topic-body">
+<h3>What is Maven?</h3>
+<p>Apache Maven is a <strong>build automation and dependency management tool</strong> for Java-based projects. Before Maven, developers manually downloaded JAR files, configured classpaths, and wrote custom Ant build scripts. Maven introduced the concept of <strong>Convention over Configuration</strong> — if you follow the standard project structure, Maven knows exactly what to do without extensive configuration.</p>
+<p>Maven uses a <strong>POM (Project Object Model)</strong> file — <code>pom.xml</code> — to define project metadata, dependencies, plugins, and build lifecycle. It resolves dependencies from Maven Central Repository (or your JFrog Artifactory), downloads them once, and caches them in <code>~/.m2/repository</code>. Maven is the most common build tool in enterprise Java and is used by Spring Boot, Quarkus, and most Java microservices.</p>
+<div class="arch-box"><div class="arch-title">Maven Build Lifecycle Architecture</div><pre>
+  pom.xml ──▶ Maven reads project config
+                      │
+  ┌───────────────────▼─────────────────────────────────┐
+  │              Maven Build Lifecycle                  │
+  │                                                     │
+  │  validate → compile → test → package → verify       │
+  │                                    │                │
+  │                              ┌─────▼───────┐        │
+  │                              │  .jar/.war  │        │
+  │                              └─────┬───────┘        │
+  │                                    │                │
+  │  install ──────────────────────────▶  deploy        │
+  │  (local ~/.m2 cache)                 (Nexus/JFrog)  │
+  └─────────────────────────────────────────────────────┘
+                      │
+              External Dependencies
+              ┌───────┴───────┐
+              │               │
+        Maven Central    JFrog Artifactory
+        (public repo)    (private/internal)</pre></div>
+
+<h3>POM.xml Structure</h3>
+<pre>&lt;project&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;!-- Project coordinates (GAV = GroupId:ArtifactId:Version) --&gt;
+  &lt;groupId&gt;com.veera.devops&lt;/groupId&gt;
+  &lt;artifactId&gt;myapp&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+
+  &lt;properties&gt;
+    &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;spring.version&gt;3.2.0&lt;/spring.version&gt;
+  &lt;/properties&gt;
+
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+      &lt;version&gt;${spring.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+      &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+      &lt;scope&gt;test&lt;/scope&gt;              &lt;!-- Only for testing --&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</pre>
+
+<h3>Key Maven Commands</h3>
+<pre>mvn validate                   # Validate project structure
+mvn compile                    # Compile source code → target/classes/
+mvn test                       # Run unit tests (JUnit/TestNG)
+mvn package                    # Create JAR/WAR → target/myapp-1.0.jar
+mvn install                    # Package + install to local ~/.m2 cache
+mvn deploy                     # Package + upload to remote repo (JFrog)
+mvn clean                      # Delete target/ directory
+mvn clean package -DskipTests  # Build without running tests (CI shortcut)
+mvn dependency:tree            # View full dependency tree
+mvn versions:display-updates   # Check for outdated dependencies</pre>
+
+<h3>Dependency Scopes</h3>
+<div class="table-wrap"><table>
+<tr><th>Scope</th><th>Compile</th><th>Test</th><th>Runtime</th><th>Use For</th></tr>
+<tr><td>compile (default)</td><td>✅</td><td>✅</td><td>✅</td><td>Core dependencies</td></tr>
+<tr><td>test</td><td>❌</td><td>✅</td><td>❌</td><td>JUnit, Mockito</td></tr>
+<tr><td>runtime</td><td>❌</td><td>✅</td><td>✅</td><td>JDBC drivers</td></tr>
+<tr><td>provided</td><td>✅</td><td>✅</td><td>❌</td><td>Servlet API (from container)</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- 11. SonarQube -->
+<div class="topic-section" id="sonarqube">
+<div class="topic-header"><div class="topic-icon-lg">🔍</div><div class="topic-header-text"><h2>SonarQube</h2><span class="tag">Code Quality</span></div></div>
+<div class="topic-body">
+<h3>What is SonarQube?</h3>
+<p>SonarQube is a <strong>continuous code quality and security inspection platform</strong>. It performs <strong>Static Application Security Testing (SAST)</strong> — analyzing source code without executing it — to detect bugs, code smells, vulnerabilities, and coverage gaps. SonarQube integrates into CI/CD pipelines to enforce quality gates that prevent bad code from reaching production.</p>
+<p>SonarQube works by having a <strong>scanner</strong> analyze your code locally (or in CI), send results to the <strong>SonarQube Server</strong>, which stores them in a PostgreSQL database and presents dashboards and quality gate decisions. If your code fails the quality gate (e.g., coverage below 80%, new Critical vulnerabilities), the pipeline fails and deployment is blocked.</p>
+<div class="arch-box"><div class="arch-title">SonarQube Integration Architecture</div><pre>
+  Developer pushes code
+           │
+           v
+  Jenkins / GitHub Actions
+           │
+           │ Step 1: Build (mvn package)
+           │
+           │ Step 2: Run SonarScanner
+           │  mvn sonar:sonar \
+           │    -Dsonar.host.url=http://sonar:9000 \
+           │    -Dsonar.login=$SONAR_TOKEN
+           │
+           v
+  SonarQube Scanner sends analysis to:
+  ┌────────────────────────────────────────────────┐
+  │            SonarQube Server :9000              │
+  │  ┌──────────────┐  ┌──────────────────────┐   │
+  │  │ Analysis DB  │  │  Quality Gate Engine │   │
+  │  │ (PostgreSQL) │  │  - Coverage ≥ 80%    │   │
+  │  │              │  │  - 0 Critical bugs   │   │
+  │  │              │  │  - Duplication &lt; 3%  │   │
+  │  └──────────────┘  └──────────┬───────────┘   │
+  └─────────────────────────────────┼──────────────┘
+                                    │
+                     ┌──────────────┴──────────────┐
+                     │                             │
+                  PASSED                        FAILED
+                     │                             │
+              Pipeline continues            Pipeline FAILS
+              → Deploy to staging           → Developer notified
+                                            → Fix and re-push</pre></div>
+
+<h3>What SonarQube Detects</h3>
+<div class="table-wrap"><table>
+<tr><th>Issue Type</th><th>Description</th><th>Example</th></tr>
+<tr><td>Bug</td><td>Code that will cause incorrect behavior</td><td>NullPointerException risk, wrong operator</td></tr>
+<tr><td>Vulnerability</td><td>Security weakness exploitable by attackers</td><td>SQL injection, XSS, hardcoded password</td></tr>
+<tr><td>Code Smell</td><td>Maintainability issue (tech debt)</td><td>Too many parameters, duplicate code, long methods</td></tr>
+<tr><td>Security Hotspot</td><td>Code needing manual security review</td><td>Use of MD5 hashing, HTTP vs HTTPS</td></tr>
+<tr><td>Coverage Gap</td><td>Code lines not covered by unit tests</td><td>Exception handling not tested</td></tr>
+</table></div>
+
+<h3>Quality Gate Configuration</h3>
+<pre># sonar-project.properties
+sonar.projectKey=my-devops-app
+sonar.projectName=My DevOps App
+sonar.sources=src/main/java
+sonar.tests=src/test/java
+sonar.java.coveragePlugin=jacoco
+sonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+sonar.exclusions=**/generated/**,**/test/**
+
+# Quality Gate thresholds (configure in SonarQube UI):
+# New Code:
+#   Coverage >= 80%
+#   Duplicated Lines < 3%
+#   Maintainability Rating = A
+#   Reliability Rating = A
+#   Security Rating = A</pre>
+</div>
+</div>
+
+<!-- 12. Jenkins Introduction -->
+<div class="topic-section" id="jenkins-intro">
+<div class="topic-header"><div class="topic-icon-lg">🤖</div><div class="topic-header-text"><h2>Jenkins Introduction</h2><span class="tag">CI/CD</span></div></div>
+<div class="topic-body">
+<h3>What is Jenkins?</h3>
+<p>Jenkins is the world's most widely used <strong>open-source automation server</strong> for Continuous Integration and Continuous Delivery. Built in Java, it orchestrates the entire software delivery pipeline — from code commit to production deployment. Jenkins monitors version control for changes, triggers automated builds, runs tests, performs quality checks, builds Docker images, and deploys to environments.</p>
+<p>Jenkins follows a <strong>master-agent architecture</strong>: the <strong>Controller (master)</strong> manages pipelines, jobs, scheduling, and the web UI. <strong>Agents (workers)</strong> are the machines that actually execute the build steps. This allows horizontal scaling — hundreds of concurrent builds across many agents. Agents can be physical machines, VMs, Docker containers, or Kubernetes pods.</p>
+<div class="arch-box"><div class="arch-title">Jenkins Master-Agent Architecture</div><pre>
+  ┌─────────────────────────────────────────────────────┐
+  │              JENKINS CONTROLLER (Master)            │
+  │  Port: 8080 (UI) | Port: 50000 (agent JNLP)        │
+  │  ┌──────────┐ ┌─────────┐ ┌────────┐ ┌──────────┐  │
+  │  │ Pipeline │ │  Job    │ │ Plugin │ │  Cred    │  │
+  │  │ Engine   │ │ Queue   │ │ Manager│ │ Store    │  │
+  │  └──────────┘ └─────────┘ └────────┘ └──────────┘  │
+  └───────────────────────┬─────────────────────────────┘
+          SSH/JNLP/Inbound│
+    ┌─────────────────────┼─────────────────────┐
+    │                     │                     │
+    v                     v                     v
+┌─────────┐         ┌─────────┐           ┌─────────┐
+│ Agent 1 │         │ Agent 2 │           │ Agent 3 │
+│ Linux   │         │ Docker  │           │ K8s Pod │
+│ Java    │         │ Container│          │(ephemeral│
+│ Maven   │         │ Node.js │           │ agent)  │
+└─────────┘         └─────────┘           └─────────┘
+  Builds Java         Builds JS            Scales auto</pre></div>
+
+<h3>Jenkins Installation</h3>
+<pre># Install Jenkins on Ubuntu
+sudo apt update
+sudo apt install -y openjdk-17-jdk
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian binary/" | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt update && sudo apt install -y jenkins
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+
+# Get initial admin password
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword</pre>
+
+<h3>First Jenkins Pipeline (Declarative)</h3>
+<pre>// Jenkinsfile — stored in your repo root
+pipeline {
+    agent any                          // Run on any available agent
+
+    environment {
+        APP_NAME = "myapp"
+        DOCKER_REGISTRY = "registry.company.com"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/org/myapp.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'  // Publish test results
+                }
+            }
+        }
+        stage('Docker Build &amp; Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds',
+                    usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh """
+                        docker build -t $DOCKER_REGISTRY/$APP_NAME:${BUILD_NUMBER} .
+                        docker login $DOCKER_REGISTRY -u $USER -p $PASS
+                        docker push $DOCKER_REGISTRY/$APP_NAME:${BUILD_NUMBER}
+                    """
+                }
+            }
+        }
+        stage('Deploy to Dev') {
+            steps {
+                sh "kubectl set image deployment/$APP_NAME $APP_NAME=$DOCKER_REGISTRY/$APP_NAME:${BUILD_NUMBER}"
+            }
+        }
+    }
+
+    post {
+        success { slackSend channel: '#devops', message: "✅ Build #${BUILD_NUMBER} succeeded!" }
+        failure { slackSend channel: '#devops', message: "❌ Build #${BUILD_NUMBER} FAILED!" }
+    }
+}</pre>
+</div>
+</div>
+
+<!-- 13. Jenkins Advanced -->
+<div class="topic-section" id="jenkins-advanced">
+<div class="topic-header"><div class="topic-icon-lg">⚡</div><div class="topic-header-text"><h2>Jenkins Advanced</h2><span class="tag">CI/CD</span></div></div>
+<div class="topic-body">
+<h3>Declarative vs Scripted Pipelines</h3>
+<p>Jenkins offers two pipeline syntaxes. <strong>Declarative</strong> (recommended) uses a structured, opinionated syntax with built-in validation — it's easier to read and enforce standards. <strong>Scripted</strong> pipelines use Groovy code directly, offering maximum flexibility but requiring Groovy knowledge. Both are defined in a <code>Jenkinsfile</code> stored in your Git repository (Pipeline as Code).</p>
+<div class="arch-box"><div class="arch-title">Multi-Stage Jenkins Pipeline with Parallel Stages</div><pre>
+  Trigger (webhook / timer / manual)
+           │
+           v
+    ┌─────────────┐
+    │  Checkout   │  (SCM clone)
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐
+    │    Build    │  (mvn package)
+    └──────┬──────┘
+           │
+    ┌──────▼──────────────────────────────┐
+    │     PARALLEL: Test + Scan           │
+    │  ┌───────────┐  ┌────────────────┐  │
+    │  │ Unit Test │  │ SonarQube Scan │  │
+    │  │ (JUnit)   │  │ (Quality Gate) │  │
+    │  └───────────┘  └────────────────┘  │
+    └──────┬──────────────────────────────┘
+           │  (all parallel stages must pass)
+    ┌──────▼──────┐
+    │ Docker Build│
+    │   & Push    │
+    └──────┬──────┘
+           │
+    ┌──────▼──────┐     ┌─────────────────────┐
+    │ Deploy Dev  │────▶│ Auto Integration Test│
+    └─────────────┘     └──────────┬──────────┘
+                                   │
+                         ┌─────────▼──────────┐
+                         │  Manual Approval   │  (input step)
+                         │   (Deploy to Prod?)│
+                         └─────────┬──────────┘
+                                   │ Approved
+                         ┌─────────▼──────────┐
+                         │   Deploy PROD      │
+                         └────────────────────┘</pre></div>
+
+<h3>Advanced Pipeline Features</h3>
+<pre>pipeline {
+    agent { label 'docker-agent' }     // Use labeled agents
+
+    options {
+        timeout(time: 30, unit: 'MINUTES')  // Pipeline timeout
+        retry(2)                            // Auto-retry on failure
+        disableConcurrentBuilds()           // One build at a time
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    triggers {
+        pollSCM('H/5 * * * *')         // Poll Git every 5 mins
+        cron('0 2 * * 1-5')            // Nightly build weekdays at 2am
+    }
+
+    parameters {
+        choice(name: 'ENVIRONMENT', choices: ['dev','staging','prod'])
+        booleanParam(name: 'RUN_TESTS', defaultValue: true)
+        string(name: 'IMAGE_TAG', defaultValue: 'latest')
+    }
+
+    stages {
+        stage('Parallel Tests') {
+            parallel {
+                stage('Unit Tests') { steps { sh 'mvn test' } }
+                stage('Integration Tests') { steps { sh 'mvn verify -P integration' } }
+                stage('Security Scan') { steps { sh 'trivy image myapp:latest' } }
+            }
+        }
+
+        stage('Deploy to Prod') {
+            when {
+                branch 'main'
+                environment name: 'ENVIRONMENT', value: 'prod'
+            }
+            steps {
+                input message: 'Deploy to Production?', ok: 'Deploy Now',
+                      submitter: 'devops-leads'
+                sh './deploy-prod.sh'
+            }
+        }
+    }
+}</pre>
+
+<h3>Shared Libraries</h3>
+<pre>// vars/deployToK8s.groovy (in shared-library repo)
+def call(String appName, String image, String namespace) {
+    sh """
+        kubectl set image deployment/${appName} ${appName}=${image} -n ${namespace}
+        kubectl rollout status deployment/${appName} -n ${namespace} --timeout=3m
+    """
+}
+
+// Usage in any Jenkinsfile:
+@Library('my-shared-library@main') _
+pipeline {
+    stages {
+        stage('Deploy') {
+            steps {
+                deployToK8s('myapp', "registry/myapp:${BUILD_NUMBER}", 'production')
+            }
+        }
+    }
+}</pre>
+</div>
+</div>
+
+<!-- 14. Jenkins Security -->
+<div class="topic-section" id="jenkins-security">
+<div class="topic-header"><div class="topic-icon-lg">🔒</div><div class="topic-header-text"><h2>Jenkins Security &amp; Plugins</h2><span class="tag">CI/CD</span></div></div>
+<div class="topic-body">
+<h3>Jenkins Security Model</h3>
+<p>Jenkins security is critical because it has access to your source code, credentials, Kubernetes clusters, and production environments. A compromised Jenkins server is a full supply chain attack vector. Jenkins security involves <strong>Authentication</strong> (who are you?), <strong>Authorization</strong> (what can you do?), and <strong>Credential Management</strong> (how do we store secrets safely?).</p>
+<div class="arch-box"><div class="arch-title">Jenkins Security Architecture</div><pre>
+  Request to Jenkins
+         │
+         v
+  ┌─────────────────────────────────────────┐
+  │          Authentication Layer           │
+  │  ┌────────────┐  ┌────────────────────┐ │
+  │  │ Jenkins DB │  │  LDAP / Active Dir │ │
+  │  │ (local)    │  │  SSO / SAML / OIDC │ │
+  │  └────────────┘  └────────────────────┘ │
+  └─────────────────┬───────────────────────┘
+                    │ Authenticated user
+  ┌─────────────────▼───────────────────────┐
+  │         Authorization Layer             │
+  │  Role-Based Access Control (RBAC)       │
+  │  ┌────────────┐ ┌──────────┐ ┌───────┐ │
+  │  │  Admin     │ │Developer │ │Viewer │ │
+  │  │ All access │ │Build/Run │ │Read   │ │
+  │  └────────────┘ └──────────┘ └───────┘ │
+  └─────────────────┬───────────────────────┘
+                    │
+  ┌─────────────────▼───────────────────────┐
+  │      Credentials Store (Encrypted)      │
+  │  SSH Keys | API Tokens | Passwords      │
+  │  Docker Registry | K8s certs | Vault    │
+  └─────────────────────────────────────────┘</pre></div>
+
+<h3>Essential Jenkins Plugins</h3>
+<div class="table-wrap"><table>
+<tr><th>Plugin</th><th>Purpose</th></tr>
+<tr><td>Pipeline</td><td>Declarative and scripted pipeline support</td></tr>
+<tr><td>Git / GitHub</td><td>Source code integration and webhooks</td></tr>
+<tr><td>Docker Pipeline</td><td>Build and push Docker images in pipelines</td></tr>
+<tr><td>Kubernetes</td><td>Dynamic K8s pod agents</td></tr>
+<tr><td>SonarQube Scanner</td><td>Code quality gate integration</td></tr>
+<tr><td>Slack Notification</td><td>Build notifications to Slack</td></tr>
+<tr><td>Role Strategy</td><td>Fine-grained RBAC for Jenkins</td></tr>
+<tr><td>Credentials Binding</td><td>Inject secrets safely into pipelines</td></tr>
+<tr><td>Blue Ocean</td><td>Modern pipeline visualization UI</td></tr>
+<tr><td>JUnit / TestNG</td><td>Test result publishing</td></tr>
+<tr><td>HashiCorp Vault</td><td>Dynamic secret injection from Vault</td></tr>
+</table></div>
+
+<h3>Secure Credential Handling</h3>
+<pre>// WRONG - Never hardcode credentials
+sh 'docker login -u admin -p password123 registry.io'
+
+// CORRECT - Use Jenkins credentials store
+withCredentials([
+    usernamePassword(credentialsId: 'docker-registry',
+        usernameVariable: 'DOCKER_USER',
+        passwordVariable: 'DOCKER_PASS'),
+    string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN'),
+    sshUserPrivateKey(credentialsId: 'deploy-key', keyFileVariable: 'SSH_KEY')
+]) {
+    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS registry.io'
+    sh "ssh -i $SSH_KEY ubuntu@server 'sudo systemctl restart app'"
+}</pre>
+</div>
+</div>
+
+<!-- 15. Jenkins Integrations -->
+<div class="topic-section" id="jenkins-integrations">
+<div class="topic-header"><div class="topic-icon-lg">🔌</div><div class="topic-header-text"><h2>Jenkins Integrations</h2><span class="tag">CI/CD</span></div></div>
+<div class="topic-body">
+<h3>Jenkins as the Integration Hub</h3>
+<p>Jenkins' power comes from its <strong>1800+ plugins</strong> that integrate it with virtually every tool in the DevOps ecosystem. A complete pipeline connects Git (source), Maven/Gradle (build), SonarQube (quality), JFrog Artifactory (artifacts), Docker (containers), Kubernetes (deployment), and Slack/PagerDuty (notifications) — all orchestrated through Jenkins.</p>
+<div class="arch-box"><div class="arch-title">Complete Jenkins Integration Map</div><pre>
+                        ┌─────────────┐
+                        │   GitHub    │──── webhook ────▶
+                        │   GitLab    │                  │
+                        └─────────────┘                  v
+                                                  ┌──────────────┐
+  ┌─────────────┐                                 │   JENKINS    │
+  │  SonarQube  │◀── sonar:sonar ─────────────────│   PIPELINE   │
+  └─────────────┘                                 │              │
+                                                  │              │──▶ Maven Build
+  ┌─────────────┐                                 │              │──▶ Docker Build
+  │JFrog/Nexus  │◀── mvn deploy ─────────────────│              │──▶ K8s Deploy
+  └─────────────┘                                 │              │──▶ Test Report
+                                                  └──────┬───────┘
+  ┌─────────────┐                                        │
+  │    Slack    │◀── notification ──────────────────────┘
+  │  PagerDuty  │
+  └─────────────┘</pre></div>
+
+<h3>Multibranch Pipeline</h3>
+<p>A <strong>Multibranch Pipeline</strong> automatically discovers all branches in a repository that contain a <code>Jenkinsfile</code> and creates a separate pipeline for each. This means every feature branch gets its own CI pipeline automatically — no manual job creation required. Pull Requests also get their own pipeline for validation before merge.</p>
+<pre>// Each branch has its own Jenkinsfile (or shared one)
+// Jenkins auto-discovers:
+//   main         → triggers on every push
+//   feature/login→ triggers on every push to this branch
+//   PR #42       → triggers on PR open/update
+
+// Environment-specific logic using branch name
+stage('Deploy') {
+    steps {
+        script {
+            if (env.BRANCH_NAME == 'main') {
+                sh './deploy.sh production'
+            } else if (env.BRANCH_NAME.startsWith('feature/')) {
+                sh "./deploy.sh dev-${env.BRANCH_NAME.replaceAll('/', '-')}"
+            }
+        }
+    }
+}</pre>
+</div>
+</div>
+
+<!-- 16. GitLab CI/CD -->
+<div class="topic-section" id="gitlab-cicd">
+<div class="topic-header"><div class="topic-icon-lg">🦊</div><div class="topic-header-text"><h2>GitLab CI/CD</h2><span class="tag">CI/CD Pipelines</span></div></div>
+<div class="topic-body">
+<h3>What is GitLab CI/CD?</h3>
+<p>GitLab CI/CD is a <strong>built-in, native CI/CD system</strong> in GitLab. Unlike Jenkins (external tool), GitLab CI is deeply integrated into the platform — code, issues, merge requests, and pipelines all live in one place. Pipelines are defined in a <code>.gitlab-ci.yml</code> file at the root of your repository. GitLab Runners execute the jobs — they can be shared (GitLab.com provides free shared runners) or self-hosted.</p>
+<div class="arch-box"><div class="arch-title">GitLab CI/CD Pipeline Architecture</div><pre>
+  git push to GitLab
+          │
+          │ triggers
+          v
+  .gitlab-ci.yml parsed
+          │
+  ┌───────▼────────────────────────────────────────┐
+  │                 PIPELINE                       │
+  │  Stage 1: build    Stage 2: test   Stage 3: deploy │
+  │  ┌─────────┐      ┌──────────┐    ┌─────────────┐ │
+  │  │ compile │      │unit-test │    │ deploy-dev  │ │
+  │  │ docker  │      │lint      │    │ deploy-prod │ │
+  │  └─────────┘      │sonarqube │    │ (manual)    │ │
+  │                   └──────────┘    └─────────────┘ │
+  └────────────────────────────────────────────────────┘
+          │
+  GitLab Runners (execute jobs)
+  ┌─────────────────────────────────┐
+  │  Shell Runner | Docker Runner   │
+  │  K8s Runner   | Shared Runners  │
+  └─────────────────────────────────┘</pre></div>
+
+<h3>Complete .gitlab-ci.yml</h3>
+<pre>image: maven:3.9-eclipse-temurin-17      # Default Docker image for all jobs
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  IMAGE_NAME: "registry.gitlab.com/$CI_PROJECT_PATH"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - .m2/repository                     # Cache Maven deps between jobs
+
+stages:
+  - build
+  - test
+  - security
+  - package
+  - deploy
+
+build:
+  stage: build
+  script:
+    - mvn compile
+  artifacts:
+    paths:
+      - target/
+
+unit-tests:
+  stage: test
+  script:
+    - mvn test
+  coverage: '/Total.*?([0-9]{1,3})%/'
+  artifacts:
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+
+sonarqube:
+  stage: security
+  script:
+    - mvn sonar:sonar -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN
+  allow_failure: false
+
+docker-build:
+  stage: package
+  image: docker:24
+  services:
+    - docker:dind
+  script:
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHA
+
+deploy-production:
+  stage: deploy
+  environment:
+    name: production
+    url: https://myapp.example.com
+  when: manual                           # Requires manual click
+  only:
+    - main
+  script:
+    - kubectl set image deployment/myapp myapp=$IMAGE_NAME:$CI_COMMIT_SHA</pre>
+</div>
+</div>
+
+<!-- 17. GitHub Actions -->
+<div class="topic-section" id="github-actions">
+<div class="topic-header"><div class="topic-icon-lg">🐙</div><div class="topic-header-text"><h2>GitHub Actions</h2><span class="tag">CI/CD Pipelines</span></div></div>
+<div class="topic-body">
+<h3>What is GitHub Actions?</h3>
+<p>GitHub Actions is GitHub's <strong>native CI/CD and automation platform</strong>. Workflows are defined as YAML files in <code>.github/workflows/</code> and are triggered by GitHub events — pushes, pull requests, issues, releases, schedules, or manual dispatch. GitHub provides free hosted runners (Ubuntu, Windows, macOS) and you can bring your own self-hosted runners.</p>
+<p>The key innovation of GitHub Actions is its <strong>marketplace of reusable Actions</strong> — over 20,000 community-built actions for common tasks (checkout, Docker build, deploy to AWS, send Slack, etc.). Instead of writing shell scripts for everything, you compose workflows from pre-built actions.</p>
+<div class="arch-box"><div class="arch-title">GitHub Actions Architecture</div><pre>
+  Event: push to main / PR opened / cron schedule
+              │
+              v
+  .github/workflows/ci.yml
+              │
+  ┌───────────▼────────────────────────────────────────┐
+  │                    WORKFLOW                        │
+  │  Job 1: build (runs-on: ubuntu-latest)             │
+  │    Step 1: actions/checkout@v4                     │
+  │    Step 2: actions/setup-java@v4                   │
+  │    Step 3: mvn package                             │
+  │    Step 4: actions/upload-artifact@v4              │
+  │                                                    │
+  │  Job 2: test (needs: build)                        │
+  │    Step 1: actions/checkout@v4                     │
+  │    Step 2: actions/download-artifact@v4            │
+  │    Step 3: mvn test                                │
+  │                                                    │
+  │  Job 3: deploy (needs: test, if: main branch)      │
+  │    Step 1: aws-actions/configure-aws-credentials   │
+  │    Step 2: kubectl deploy                          │
+  └────────────────────────────────────────────────────┘
+              │
+  GitHub-hosted Runner (ubuntu-latest)
+  or Self-hosted Runner (your EC2 / K8s)</pre></div>
+
+<h3>Complete CI/CD Workflow</h3>
+<pre>name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:                     # Allow manual trigger
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and Test
+        run: mvn clean verify
+
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: JUnit Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+
+  docker-build-push:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+  deploy:
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    environment: production              # Requires environment approval
+    steps:
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/myapp \
+            myapp=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}</pre>
+</div>
+</div>
+
+<!-- 18. Docker -->
+<div class="topic-section" id="docker">
+<div class="topic-header"><div class="topic-icon-lg">🐳</div><div class="topic-header-text"><h2>Docker</h2><span class="tag">Containerization</span></div></div>
+<div class="topic-body">
+<h3>What is Docker and Why Containers?</h3>
+<p>Docker is a <strong>containerization platform</strong> that packages an application and all its dependencies (runtime, libraries, config) into a portable, isolated unit called a <strong>container</strong>. Containers solve the classic "it works on my machine" problem — a Docker container runs identically on a developer laptop, CI server, or production Kubernetes cluster.</p>
+<p>Containers use <strong>Linux kernel namespaces</strong> (for isolation) and <strong>cgroups</strong> (for resource limits) — they share the host OS kernel but are isolated at the process, network, and filesystem level. Unlike VMs, containers don't need a guest OS, making them start in milliseconds and use megabytes instead of gigabytes of memory.</p>
+<div class="arch-box"><div class="arch-title">Docker Architecture — How Containers Work</div><pre>
+  ┌─────────────────────────────────────────────────────────┐
+  │                    HOST MACHINE                         │
+  │                                                         │
+  │  ┌──────────┐  ┌──────────┐  ┌──────────┐             │
+  │  │Container1│  │Container2│  │Container3│             │
+  │  │ App: API │  │ App: DB  │  │ App: Web │             │
+  │  │ Port:8080│  │ Port:5432│  │ Port:80  │             │
+  │  │ /app/... │  │ /var/... │  │ /www/... │             │
+  │  └────┬─────┘  └────┬─────┘  └────┬─────┘             │
+  │       │              │              │                   │
+  │  ┌────▼──────────────▼──────────────▼──────────────┐   │
+  │  │          Docker Engine (dockerd)                 │   │
+  │  │  containerd → runc → Linux Kernel namespaces     │   │
+  │  └──────────────────────────────────────────────────┘   │
+  │                  Linux Kernel                           │
+  │              (namespaces + cgroups)                     │
+  └─────────────────────────────────────────────────────────┘
+
+  Dockerfile ──▶ docker build ──▶ Image ──▶ docker push ──▶ Registry
+                                     └──▶ docker run  ──▶ Container</pre></div>
+
+<h3>Production-Grade Dockerfile</h3>
+<pre># Multi-stage build — small, secure final image
+# Stage 1: Build
+FROM maven:3.9-eclipse-temurin-17-alpine AS builder
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -q           # Cache deps in a separate layer
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Stage 2: Runtime (minimal image — no build tools)
+FROM eclipse-temurin:17-jre-alpine
+RUN addgroup -S appgroup &amp;&amp; adduser -S appuser -G appgroup   # Non-root user
+WORKDIR /app
+COPY --from=builder /app/target/myapp.jar ./app.jar
+RUN chown -R appuser:appgroup /app
+USER appuser                               # Run as non-root (security!)
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD wget -qO- http://localhost:8080/actuator/health || exit 1
+ENTRYPOINT ["java", "-jar", "-Xmx512m", "app.jar"]</pre>
+
+<h3>Docker Commands</h3>
+<pre># Build and run
+docker build -t myapp:1.0 .
+docker build -t myapp:1.0 --build-arg ENV=prod .
+docker run -d -p 8080:8080 --name myapp myapp:1.0
+docker run -d -p 8080:8080 -e DB_HOST=localhost -v /data:/app/data myapp:1.0
+
+# Manage containers
+docker ps                              # Running containers
+docker ps -a                           # All containers (including stopped)
+docker logs -f myapp                   # Stream logs
+docker exec -it myapp /bin/sh          # Shell inside container
+docker stats                           # Real-time resource usage
+docker stop myapp &amp;&amp; docker rm myapp
+
+# Registry operations
+docker login registry.io
+docker tag myapp:1.0 registry.io/team/myapp:1.0
+docker push registry.io/team/myapp:1.0
+docker pull registry.io/team/myapp:1.0
+
+# Cleanup
+docker system prune -af               # Remove all unused images/containers</pre>
+
+<h3>Docker Compose — Multi-Container Apps</h3>
+<pre>version: '3.8'
+services:
+  app:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      DB_HOST: postgres
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb
+
+volumes:
+  pgdata:</pre>
+
+<h3>VM vs Container vs Serverless</h3>
+<div class="table-wrap"><table>
+<tr><th>Aspect</th><th>Virtual Machine</th><th>Container</th><th>Serverless</th></tr>
+<tr><td>Startup Time</td><td>Minutes</td><td>Seconds</td><td>Milliseconds</td></tr>
+<tr><td>Size</td><td>GBs (full OS)</td><td>MBs (app only)</td><td>N/A (managed)</td></tr>
+<tr><td>Isolation</td><td>Full hardware</td><td>Kernel-level</td><td>Full (per invocation)</td></tr>
+<tr><td>Portability</td><td>Medium</td><td>Very High</td><td>Low (vendor-specific)</td></tr>
+<tr><td>Best For</td><td>Legacy apps, isolation</td><td>Microservices, CI</td><td>Event-driven, bursty</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- 19. JFrog -->
+<div class="topic-section" id="jfrog">
+<div class="topic-header"><div class="topic-icon-lg">📦</div><div class="topic-header-text"><h2>JFrog Artifact Management</h2><span class="tag">Artifact Management</span></div></div>
+<div class="topic-body">
+<h3>What is Artifact Management?</h3>
+<p>An <strong>artifact</strong> is any file produced by a build process — JAR files, Docker images, npm packages, Helm charts, Python wheels, RPMs, etc. After building, these artifacts need to be stored, versioned, scanned, and distributed. <strong>JFrog Artifactory</strong> is the industry-leading universal artifact repository manager that acts as a single source of truth for all your build outputs.</p>
+<p>Without a proper artifact repository, teams download dependencies directly from the internet (unreliable, slow, security risk) and store build outputs in Jenkins workspaces (not versioned, not audited, lost on cleanup). Artifactory provides <strong>proxying</strong> (cache Maven Central, Docker Hub), <strong>hosting</strong> (store your own artifacts), and <strong>virtual repos</strong> (unified view of multiple repos).</p>
+<div class="arch-box"><div class="arch-title">JFrog Artifactory in CI/CD Pipeline</div><pre>
+  Internet (Maven Central, Docker Hub, npm registry)
+           │
+           │ proxy + cache (once only)
+           v
+  ┌──────────────────────────────────────────────────┐
+  │              JFrog Artifactory                   │
+  │                                                  │
+  │  Virtual Repos (unified access point)            │
+  │  ┌──────────────┐  ┌──────────┐  ┌───────────┐  │
+  │  │ libs-release │  │ docker-  │  │ helm-     │  │
+  │  │ libs-snapshot│  │ local    │  │ local     │  │
+  │  │ libs-proxy   │  │ docker-  │  │ helm-     │  │
+  │  │ (Maven repos)│  │ proxy    │  │ proxy     │  │
+  │  └──────────────┘  └──────────┘  └───────────┘  │
+  │                                                  │
+  │  Xray: Security scanning of all stored artifacts │
+  └─────────────────┬────────────────────────────────┘
+                    │
+      ┌─────────────┴─────────────┐
+      │                           │
+      v                           v
+  Maven build              Docker build
+  (mvn deploy)             (docker push)
+  stores .jar              stores image layers</pre></div>
+
+<h3>Configuring Maven with Artifactory</h3>
+<pre># settings.xml (~/.m2/settings.xml)
+&lt;settings&gt;
+  &lt;servers&gt;
+    &lt;server&gt;
+      &lt;id&gt;artifactory&lt;/id&gt;
+      &lt;username&gt;${ARTIFACTORY_USER}&lt;/username&gt;
+      &lt;password&gt;${ARTIFACTORY_TOKEN}&lt;/password&gt;
+    &lt;/server&gt;
+  &lt;/servers&gt;
+
+  &lt;mirrors&gt;
+    &lt;mirror&gt;
+      &lt;id&gt;artifactory&lt;/id&gt;
+      &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;          &lt;!-- Route ALL downloads through Artifactory --&gt;
+      &lt;url&gt;https://artifactory.company.com/artifactory/libs-virtual&lt;/url&gt;
+    &lt;/mirror&gt;
+  &lt;/mirrors&gt;
+&lt;/settings&gt;</pre>
+<div class="tip-box"><strong>💡 JFrog Xray:</strong> JFrog Xray scans all artifacts for CVEs (Common Vulnerabilities and Exposures), license compliance issues, and operational risks. It can block downloads of vulnerable packages and fail CI pipelines when critical vulnerabilities are found in dependencies.</div>
+</div>
+</div>
+
+<!-- 20. Kubernetes Introduction -->
+<div class="topic-section" id="kubernetes-intro">
+<div class="topic-header"><div class="topic-icon-lg">☸️</div><div class="topic-header-text"><h2>Kubernetes Introduction</h2><span class="tag">Orchestration</span></div></div>
+<div class="topic-body">
+<h3>What is Kubernetes?</h3>
+<p>Kubernetes (K8s) is an <strong>open-source container orchestration platform</strong> originally developed by Google (inspired by their internal Borg system) and donated to the CNCF in 2014. It automates the deployment, scaling, load balancing, healing, and management of containerized applications. If Docker is about running a single container, Kubernetes is about running hundreds or thousands of containers reliably across a cluster of machines.</p>
+<p>The core problem Kubernetes solves: when you run containers at scale, you need to answer questions like: Which server should run this container? What happens if a server dies? How do I update 100 containers without downtime? How do I scale from 3 to 30 containers during traffic spikes? Kubernetes answers all of these automatically.</p>
+<div class="arch-box"><div class="arch-title">Kubernetes Cluster Architecture</div><pre>
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                    CONTROL PLANE (Master)                       │
+  │  ┌──────────────┐  ┌──────────┐  ┌───────────┐  ┌──────────┐  │
+  │  │ API Server   │  │Scheduler │  │Controller │  │   etcd   │  │
+  │  │ (kube-api)   │  │(bin pack)│  │  Manager  │  │ (state   │  │
+  │  │ REST gateway │  │best node │  │(reconcile)│  │  store)  │  │
+  │  └──────────────┘  └──────────┘  └───────────┘  └──────────┘  │
+  └──────────────────────────┬──────────────────────────────────────┘
+                             │ kubectl / CI/CD deploys here
+          ┌──────────────────┼───────────────────┐
+          │                  │                   │
+          v                  v                   v
+  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+  │  WORKER NODE 1 │ │  WORKER NODE 2 │ │  WORKER NODE 3 │
+  │  ┌──────────┐  │ │  ┌──────────┐  │ │  ┌──────────┐  │
+  │  │  kubelet │  │ │  │  kubelet │  │ │  │  kubelet │  │
+  │  │  kube-   │  │ │  │  kube-   │  │ │  │  kube-   │  │
+  │  │  proxy   │  │ │  │  proxy   │  │ │  │  proxy   │  │
+  │  │  (pods)  │  │ │  │  (pods)  │  │ │  │  (pods)  │  │
+  │  └──────────┘  │ │  └──────────┘  │ │  └──────────┘  │
+  └────────────────┘ └────────────────┘ └────────────────┘</pre></div>
+
+<h3>Core Kubernetes Objects</h3>
+<div class="table-wrap"><table>
+<tr><th>Object</th><th>Purpose</th><th>Analogy</th></tr>
+<tr><td>Pod</td><td>Smallest unit — 1+ containers sharing network/storage</td><td>A single running process</td></tr>
+<tr><td>Deployment</td><td>Manages ReplicaSets, rolling updates, rollbacks</td><td>A job description for pods</td></tr>
+<tr><td>Service</td><td>Stable network endpoint for pods (load balancer)</td><td>A phone number for pods</td></tr>
+<tr><td>Ingress</td><td>HTTP/HTTPS routing with hostname/path rules</td><td>A receptionist routing calls</td></tr>
+<tr><td>ConfigMap</td><td>Non-sensitive configuration (env vars, files)</td><td>A config file</td></tr>
+<tr><td>Secret</td><td>Sensitive data (passwords, tokens) — base64 encoded</td><td>A safe</td></tr>
+<tr><td>PersistentVolume</td><td>Storage that outlives pods</td><td>An external hard drive</td></tr>
+<tr><td>Namespace</td><td>Logical isolation within a cluster</td><td>A separate folder</td></tr>
+</table></div>
+
+<h3>Essential kubectl Commands</h3>
+<pre># Cluster info
+kubectl cluster-info
+kubectl get nodes
+kubectl get all -n production
+
+# Deployments
+kubectl apply -f deployment.yaml
+kubectl get deployments
+kubectl get pods -o wide
+kubectl describe pod myapp-abc-123
+kubectl logs myapp-abc-123 -f             # Stream logs
+kubectl exec -it myapp-abc-123 -- /bin/sh # Shell into pod
+
+# Scaling
+kubectl scale deployment myapp --replicas=5
+kubectl autoscale deployment myapp --min=2 --max=10 --cpu-percent=60
+
+# Updates and rollbacks
+kubectl set image deployment/myapp myapp=myapp:2.0
+kubectl rollout status deployment/myapp
+kubectl rollout history deployment/myapp
+kubectl rollout undo deployment/myapp     # Rollback to previous version</pre>
+</div>
+</div>
+
+<!-- 21. Kubernetes Deployments -->
+<div class="topic-section" id="kubernetes-deployments">
+<div class="topic-header"><div class="topic-icon-lg">🚢</div><div class="topic-header-text"><h2>Kubernetes Deployments</h2><span class="tag">Orchestration</span></div></div>
+<div class="topic-body">
+<h3>Writing Production Kubernetes Manifests</h3>
+<p>A Kubernetes manifest is a YAML file that declares the <strong>desired state</strong> of your application. Kubernetes continuously reconciles the actual state with the desired state — if a pod crashes, it's automatically restarted; if a node dies, pods are rescheduled to healthy nodes. This <strong>declarative, self-healing</strong> model is what makes Kubernetes so powerful.</p>
+<div class="arch-box"><div class="arch-title">Kubernetes Deployment + Service + Ingress Stack</div><pre>
+  Internet
+     │ HTTPS
+     v
+  ┌─────────────────────────────────────────┐
+  │  Ingress (nginx-ingress-controller)     │
+  │  api.myapp.com → service:myapp-svc:8080 │
+  └───────────────────┬─────────────────────┘
+                      │
+  ┌───────────────────▼─────────────────────┐
+  │  Service (ClusterIP/LoadBalancer)        │
+  │  Selector: app=myapp                    │
+  │  Port: 8080 → targetPort: 8080          │
+  │  Load balances across all matching pods │
+  └───────┬───────────────────┬─────────────┘
+          │                   │
+   ┌──────▼──────┐    ┌───────▼──────┐
+   │  Pod (app)  │    │  Pod (app)   │   ← Deployment manages these
+   │  app:myapp  │    │  app:myapp   │
+   │  v2.0.1     │    │  v2.0.1      │
+   └─────────────┘    └──────────────┘</pre></div>
+
+<h3>Complete Production Deployment YAML</h3>
+<pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  namespace: production
+  labels:
+    app: myapp
+    version: v2.0.1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1          # Allow 1 extra pod during update
+      maxUnavailable: 0    # Never reduce below 3 pods (zero-downtime)
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: registry.io/myapp:v2.0.1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: myapp-config
+              key: db-host
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: myapp-secrets
+              key: db-password
+        resources:
+          requests:             # Guaranteed resources
+            memory: "256Mi"
+            cpu: "250m"
+          limits:               # Maximum resources
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-svc
+  namespace: production
+spec:
+  selector:
+    app: myapp
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts: [api.myapp.com]
+    secretName: myapp-tls
+  rules:
+  - host: api.myapp.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: myapp-svc
+            port:
+              number: 8080</pre>
+</div>
+</div>
+
+<!-- 22. Kubernetes Advanced -->
+<div class="topic-section" id="kubernetes-advanced">
+<div class="topic-header"><div class="topic-icon-lg">🎯</div><div class="topic-header-text"><h2>Kubernetes Advanced</h2><span class="tag">Orchestration</span></div></div>
+<div class="topic-body">
+<h3>Advanced Kubernetes Concepts</h3>
+<p>Beyond basic deployments, production Kubernetes requires understanding of <strong>Horizontal Pod Autoscaling (HPA)</strong>, <strong>Pod Disruption Budgets (PDB)</strong>, <strong>RBAC</strong>, <strong>Network Policies</strong>, and <strong>Helm</strong> for package management. These features separate a test cluster from a production-grade, secure, auto-scaling cluster.</p>
+<div class="arch-box"><div class="arch-title">Kubernetes Auto-Scaling Architecture</div><pre>
+  Traffic Spike
+       │
+       v
+  Metrics Server collects CPU/Memory from nodes
+       │
+       v
+  HPA Controller checks metrics every 15s
+  ┌───────────────────────────────────────┐
+  │  target CPU = 60%                     │
+  │  current CPU = 85%                    │
+  │  current replicas = 3                 │
+  │  desired = ceil(3 × 85/60) = 5 pods  │
+  └───────────────────┬───────────────────┘
+                      │ scale up
+                      v
+  Deployment: 3 pods → 5 pods (new pods scheduled on nodes)
+                      │
+  Traffic drops:      │
+                      v
+  HPA scales down 5 → 3 (respects stabilization window)</pre></div>
+
+<h3>Horizontal Pod Autoscaler</h3>
+<pre>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: myapp-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: myapp
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60       # Scale up if avg CPU > 60%
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 70
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300  # Wait 5min before scaling down</pre>
+
+<h3>Helm — Kubernetes Package Manager</h3>
+<pre># Helm is like apt/yum for Kubernetes
+helm repo add stable https://charts.helm.sh/stable
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+helm install my-postgres bitnami/postgresql \
+  --set auth.postgresPassword=secret \
+  --set primary.persistence.size=10Gi
+
+helm upgrade myapp ./myapp-chart --set image.tag=v2.0.1
+helm rollback myapp 1               # Rollback to revision 1
+helm list                           # List installed releases
+helm history myapp                  # Show revision history</pre>
+
+<h3>RBAC — Role-Based Access Control</h3>
+<pre>apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: production
+  name: developer-role
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments", "pods"]
+  verbs: ["get", "list", "watch"]     # Read-only for developers
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: developer-binding
+  namespace: production
+subjects:
+- kind: User
+  name: john.doe@company.com
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer-role
+  apiGroup: rbac.authorization.k8s.io</pre>
+</div>
+</div>
+
+<!-- 23. ArgoCD -->
+<div class="topic-section" id="argocd">
+<div class="topic-header"><div class="topic-icon-lg">🔄</div><div class="topic-header-text"><h2>ArgoCD GitOps</h2><span class="tag">GitOps</span></div></div>
+<div class="topic-body">
+<h3>What is GitOps?</h3>
+<p><strong>GitOps</strong> is a deployment methodology where <strong>Git is the single source of truth</strong> for both application code and infrastructure configuration. Instead of running <code>kubectl apply</code> from a CI pipeline (push model), a GitOps agent like ArgoCD runs inside the cluster, continuously watches a Git repository, and automatically syncs any changes to the cluster (pull model). If someone manually changes the cluster, ArgoCD detects the drift and reverts it.</p>
+<p>ArgoCD is a <strong>declarative GitOps continuous delivery tool</strong> for Kubernetes. It monitors Git repos for changes to Kubernetes manifests (YAML, Helm charts, Kustomize) and ensures the cluster always matches what's in Git. This provides complete auditability — every change is a Git commit with author, timestamp, and reason.</p>
+<div class="arch-box"><div class="arch-title">ArgoCD GitOps Architecture — Push vs Pull</div><pre>
+  TRADITIONAL (Push Model - Jenkins):
+  Developer → git push → Jenkins pipeline → kubectl apply → K8s Cluster
+  (CI has admin credentials to cluster — security risk)
+
+  GITOPS (Pull Model - ArgoCD):
+  Developer → git push → Git Repo (config changes)
+                              │
+                         ArgoCD watches │ (in-cluster, no external access needed)
+                              │
+                    ┌─────────▼──────────────────────┐
+                    │         ArgoCD (in K8s)         │
+                    │  ┌────────────────────────────┐ │
+                    │  │ Application Controller     │ │
+                    │  │ - Compares Git vs Cluster  │ │
+                    │  │ - Detects drift            │ │
+                    │  │ - Auto-syncs on change     │ │
+                    │  └────────────────────────────┘ │
+                    └────────────┬───────────────────┘
+                                 │ sync
+                                 v
+                          K8s Cluster
+                    (always matches Git state)</pre></div>
+
+<h3>ArgoCD Application Manifest</h3>
+<pre>apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-production
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/company/k8s-configs.git
+    targetRevision: main
+    path: apps/production/myapp      # Folder with K8s YAML or Helm chart
+    helm:
+      valueFiles:
+      - values-production.yaml
+  destination:
+    server: https://kubernetes.default.svc   # Target cluster
+    namespace: production
+  syncPolicy:
+    automated:
+      prune: true           # Delete resources removed from Git
+      selfHeal: true        # Auto-revert manual changes
+    syncOptions:
+    - CreateNamespace=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        maxDuration: 1m</pre>
+
+<h3>CI/CD + GitOps Combined Pipeline</h3>
+<pre># CI Pipeline (GitHub Actions / Jenkins):
+# 1. Developer pushes app code
+# 2. CI builds, tests, scans Docker image
+# 3. CI pushes image to registry (ghcr.io/team/myapp:abc123)
+# 4. CI opens a PR to the config repo:
+#      Update image tag in k8s-configs/apps/production/values.yaml
+#      from: image.tag: v1.0.0
+#      to:   image.tag: abc123
+
+# GitOps Pipeline (ArgoCD):
+# 5. PR reviewed and merged to config repo
+# 6. ArgoCD detects change in config repo
+# 7. ArgoCD syncs new image tag to cluster
+# 8. Kubernetes performs rolling update
+# 9. ArgoCD reports sync status ✅</pre>
+</div>
+</div>
+
+<!-- 24. Grafana -->
+<div class="topic-section" id="grafana">
+<div class="topic-header"><div class="topic-icon-lg">📊</div><div class="topic-header-text"><h2>Grafana Monitoring</h2><span class="tag">Monitoring</span></div></div>
+<div class="topic-body">
+<h3>The Observability Stack</h3>
+<p>Observability means understanding the internal state of a system by examining its outputs. Modern systems require three pillars of observability: <strong>Metrics</strong> (numerical time-series data — CPU, request rate, error rate), <strong>Logs</strong> (textual event records), and <strong>Traces</strong> (request journeys across microservices). The standard DevOps observability stack combines <strong>Prometheus</strong> (metrics collection) + <strong>Grafana</strong> (visualization + alerting) + <strong>ELK/Loki</strong> (logs).</p>
+<div class="arch-box"><div class="arch-title">Complete Monitoring Stack Architecture</div><pre>
+  Applications + Kubernetes Nodes
+         │
+  ┌──────┴─────────────────────────────────────────────┐
+  │              DATA COLLECTION LAYER                 │
+  │  ┌─────────────┐  ┌───────────┐  ┌─────────────┐  │
+  │  │ Prometheus  │  │  Loki     │  │   Jaeger    │  │
+  │  │ (metrics)   │  │  (logs)   │  │  (traces)   │  │
+  │  │ scrapes     │  │  receives │  │  receives   │  │
+  │  │ /metrics    │  │  log push │  │  spans      │  │
+  │  └──────┬──────┘  └─────┬─────┘  └──────┬──────┘  │
+  └─────────┼───────────────┼───────────────┼──────────┘
+            │               │               │
+            └───────────────┴───────────────┘
+                            │
+                      Data Sources
+                            │
+                  ┌─────────▼─────────┐
+                  │     GRAFANA       │
+                  │  Dashboards       │
+                  │  Alerting Rules   │
+                  │  Explore (adhoc)  │
+                  └─────────┬─────────┘
+                            │ alerts
+                  ┌─────────▼─────────┐
+                  │  Alert Manager    │
+                  │  → Slack          │
+                  │  → PagerDuty      │
+                  │  → Email          │
+                  └───────────────────┘</pre></div>
+
+<h3>Prometheus Metrics & PromQL</h3>
+<pre># Prometheus scrape config (prometheus.yml)
+scrape_configs:
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+    - role: pod
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+
+# Key PromQL queries for DevOps dashboards:
+
+# HTTP Request Rate (requests/second)
+rate(http_requests_total[5m])
+
+# Error Rate (%)
+rate(http_requests_total{status=~"5.."}[5m])
+/ rate(http_requests_total[5m]) * 100
+
+# 95th Percentile Latency
+histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
+
+# CPU Usage per Pod
+sum(rate(container_cpu_usage_seconds_total[5m])) by (pod)
+
+# Memory Usage
+container_memory_working_set_bytes{container!=""} / 1024 / 1024</pre>
+
+<h3>Grafana Alerting</h3>
+<pre># Alert Rule Example (in Grafana UI or as YAML):
+groups:
+- name: application
+  rules:
+  - alert: HighErrorRate
+    expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+    for: 2m                    # Must be true for 2 minutes before firing
+    labels:
+      severity: critical
+    annotations:
+      summary: "High error rate on {{ $labels.service }}"
+      description: "Error rate is {{ $value | humanizePercentage }}"
+      runbook: "https://wiki/runbooks/high-error-rate"
+
+  - alert: PodCrashLooping
+    expr: increase(kube_pod_container_status_restarts_total[1h]) > 5
+    for: 0m
+    labels:
+      severity: warning</pre>
+</div>
+</div>
+
+<!-- 25. Ansible Introduction -->
+<div class="topic-section" id="ansible-intro">
+<div class="topic-header"><div class="topic-icon-lg">🤝</div><div class="topic-header-text"><h2>Ansible Introduction</h2><span class="tag">Config Management</span></div></div>
+<div class="topic-body">
+<h3>What is Ansible?</h3>
+<p>Ansible is an <strong>agentless, open-source configuration management and automation tool</strong>. Unlike Chef or Puppet which require agents installed on managed nodes, Ansible uses <strong>SSH</strong> (or WinRM for Windows) to connect to target machines and execute tasks defined in human-readable YAML files called <strong>Playbooks</strong>. This agentless approach makes Ansible easy to adopt — just install Python on the target and you're ready.</p>
+<p>Ansible follows a <strong>push-based model</strong>: the Ansible control node (your machine or CI server) pushes configuration to managed nodes. It is <strong>idempotent</strong> — running the same playbook 10 times produces the same result as running it once (it won't install Nginx twice if it's already installed).</p>
+<div class="arch-box"><div class="arch-title">Ansible Architecture — Agentless Push Model</div><pre>
+  CONTROL NODE (your machine / Jenkins)
+  ┌───────────────────────────────────────────┐
+  │  Ansible Engine                           │
+  │  ┌──────────┐ ┌──────────┐ ┌──────────┐  │
+  │  │Inventory │ │Playbooks │ │ Modules  │  │
+  │  │(who)     │ │(what)    │ │(how)     │  │
+  │  └──────────┘ └──────────┘ └──────────┘  │
+  └──────────────────────┬────────────────────┘
+                         │
+              SSH (port 22) — no agents needed!
+          ┌──────────────┼──────────────┐
+          │              │              │
+          v              v              v
+   ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+   │ Web Server  │ │  App Server │ │  DB Server  │
+   │ Ubuntu 22   │ │  Ubuntu 22  │ │  Ubuntu 22  │
+   │ Python only │ │  Python only│ │  Python only│
+   │ (no agent)  │ │  (no agent) │ │  (no agent) │
+   └─────────────┘ └─────────────┘ └─────────────┘
+
+  Ansible copies module code to target via SSH,
+  executes it, retrieves results, deletes temp files.</pre></div>
+
+<h3>Ansible vs Other Config Management Tools</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Ansible</th><th>Chef</th><th>Puppet</th><th>SaltStack</th></tr>
+<tr><td>Agent Required</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td><td>Optional</td></tr>
+<tr><td>Language</td><td>YAML</td><td>Ruby DSL</td><td>Puppet DSL</td><td>YAML/Python</td></tr>
+<tr><td>Push/Pull</td><td>Push</td><td>Pull</td><td>Pull</td><td>Both</td></tr>
+<tr><td>Learning Curve</td><td>Low</td><td>High</td><td>High</td><td>Medium</td></tr>
+<tr><td>Best For</td><td>Ad-hoc, apps, cloud</td><td>Complex config</td><td>Enterprise config</td><td>Large scale</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- 26. Ansible Inventory -->
+<div class="topic-section" id="ansible-inventory">
+<div class="topic-header"><div class="topic-icon-lg">📋</div><div class="topic-header-text"><h2>Ansible Inventory &amp; Commands</h2><span class="tag">Config Management</span></div></div>
+<div class="topic-body">
+<h3>Ansible Inventory</h3>
+<p>The <strong>inventory</strong> tells Ansible which hosts to manage and how to connect to them. Hosts can be grouped logically (web servers, DB servers, production, staging). Inventory can be <strong>static</strong> (an INI or YAML file) or <strong>dynamic</strong> (a script that queries AWS/Azure/GCP for running instances in real-time). Dynamic inventories are essential for cloud environments where servers come and go.</p>
+<div class="arch-box"><div class="arch-title">Inventory Structure</div><pre>
+  inventory/
+  ├── hosts.yml          (static inventory)
+  ├── aws_ec2.yml        (dynamic inventory plugin)
+  └── group_vars/
+      ├── all.yml        (vars for ALL hosts)
+      ├── webservers.yml (vars for webservers group)
+      └── production.yml (vars for production group)</pre></div>
+
+<h3>Static Inventory (YAML)</h3>
+<pre># inventory/hosts.yml
+all:
+  children:
+    webservers:
+      hosts:
+        web1.prod.com:
+          ansible_user: ubuntu
+          ansible_ssh_private_key_file: ~/.ssh/prod.pem
+        web2.prod.com:
+          ansible_user: ubuntu
+    dbservers:
+      hosts:
+        db1.prod.com:
+          ansible_user: ubuntu
+          ansible_port: 2222            # Custom SSH port
+    staging:
+      children:
+        web_staging:
+          hosts:
+            staging-web.company.com:
+        db_staging:
+          hosts:
+            staging-db.company.com:</pre>
+
+<h3>Ad-Hoc Commands (Quick Tasks)</h3>
+<pre># Format: ansible [pattern] -m [module] -a [arguments]
+
+# Test connectivity
+ansible all -m ping
+ansible webservers -m ping
+
+# Run shell commands
+ansible webservers -m shell -a "df -h"
+ansible dbservers -m shell -a "systemctl status postgresql"
+
+# Copy files
+ansible webservers -m copy -a "src=./nginx.conf dest=/etc/nginx/nginx.conf"
+
+# Install packages
+ansible webservers -m apt -a "name=nginx state=present" --become
+
+# Manage services
+ansible webservers -m service -a "name=nginx state=restarted" --become
+
+# Gather facts (info about target)
+ansible web1.prod.com -m setup | grep ansible_distribution</pre>
+</div>
+</div>
+
+<!-- 27. Ansible Playbooks -->
+<div class="topic-section" id="ansible-playbooks">
+<div class="topic-header"><div class="topic-icon-lg">📜</div><div class="topic-header-text"><h2>Ansible Playbooks</h2><span class="tag">Config Management</span></div></div>
+<div class="topic-body">
+<h3>What is a Playbook?</h3>
+<p>An Ansible <strong>Playbook</strong> is a YAML file that defines a set of ordered <strong>Plays</strong>. Each Play maps a set of <strong>Tasks</strong> to a group of hosts. Tasks call <strong>Modules</strong> — over 3000 built-in modules exist for managing packages, files, services, cloud resources, databases, users, and more. Playbooks are idempotent, version-controlled, and the primary way to automate complex multi-step configurations.</p>
+<div class="arch-box"><div class="arch-title">Playbook Execution Flow</div><pre>
+  ansible-playbook deploy-app.yml
+          │
+          v
+  ┌───────────────────────────────────────────────────┐
+  │  PLAY 1: Configure Web Servers                    │
+  │  hosts: webservers                                │
+  │  ┌───────────────────────────────────────────┐    │
+  │  │ Task 1: Update apt cache                  │    │
+  │  │ Task 2: Install nginx                     │    │
+  │  │ Task 3: Copy nginx config (template)      │    │
+  │  │ Task 4: Notify handler: restart nginx     │    │
+  │  └───────────────────────────────────────────┘    │
+  │  HANDLERS (run only if notified):                 │
+  │  │  → restart nginx                              │
+  └───────────────────────────────────────────────────┘
+          │
+  ┌───────────────────────────────────────────────────┐
+  │  PLAY 2: Deploy Application                       │
+  │  hosts: webservers                                │
+  │  ┌───────────────────────────────────────────┐    │
+  │  │ Task 1: Pull Docker image                 │    │
+  │  │ Task 2: Stop old container                │    │
+  │  │ Task 3: Start new container               │    │
+  │  │ Task 4: Health check                      │    │
+  │  └───────────────────────────────────────────┘    │
+  └───────────────────────────────────────────────────┘</pre></div>
+
+<h3>Complete Playbook Example</h3>
+<pre>---
+- name: Configure and Deploy Web Application
+  hosts: webservers
+  become: yes                      # Run as sudo
+  vars:
+    app_name: myapp
+    app_port: 8080
+    app_version: "{{ lookup('env', 'APP_VERSION') | default('latest') }}"
+
+  pre_tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600     # Only update if cache is > 1hr old
+
+  tasks:
+    - name: Install required packages
+      apt:
+        name:
+          - nginx
+          - docker.io
+          - curl
+        state: present
+
+    - name: Deploy nginx config from template
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/{{ app_name }}
+        owner: www-data
+        mode: '0644'
+      notify: Reload nginx          # Trigger handler only if file changed
+
+    - name: Pull application Docker image
+      docker_image:
+        name: "registry.io/{{ app_name }}:{{ app_version }}"
+        source: pull
+
+    - name: Run application container
+      docker_container:
+        name: "{{ app_name }}"
+        image: "registry.io/{{ app_name }}:{{ app_version }}"
+        state: started
+        restart_policy: always
+        ports:
+          - "{{ app_port }}:{{ app_port }}"
+        env:
+          DB_HOST: "{{ db_host }}"
+          DB_PASSWORD: "{{ vault_db_password }}"  # From Ansible Vault (encrypted)
+
+    - name: Wait for application to be healthy
+      uri:
+        url: "http://localhost:{{ app_port }}/health"
+        status_code: 200
+      register: health_result
+      until: health_result.status == 200
+      retries: 12
+      delay: 5
+
+  handlers:
+    - name: Reload nginx
+      service:
+        name: nginx
+        state: reloaded
+
+    - name: Restart app
+      docker_container:
+        name: "{{ app_name }}"
+        state: started
+        restart: yes</pre>
+
+<h3>Ansible Roles — Reusable Structure</h3>
+<pre>roles/
+  nginx/
+    tasks/
+      main.yml        # Main task list
+    handlers/
+      main.yml        # Handlers
+    templates/
+      nginx.conf.j2   # Jinja2 templates
+    vars/
+      main.yml        # Role variables
+    defaults/
+      main.yml        # Default values (overridable)
+    meta/
+      main.yml        # Dependencies on other roles
+
+# Using roles in a playbook:
+- hosts: webservers
+  roles:
+    - nginx
+    - { role: app-deploy, app_version: v2.0.1 }</pre>
+</div>
+</div>
+
+<!-- 28. Terraform Introduction -->
+<div class="topic-section" id="terraform-intro">
+<div class="topic-header"><div class="topic-icon-lg">🏛️</div><div class="topic-header-text"><h2>Terraform Introduction</h2><span class="tag">IaC</span></div></div>
+<div class="topic-body">
+<h3>What is Infrastructure as Code?</h3>
+<p><strong>Infrastructure as Code (IaC)</strong> means managing and provisioning cloud infrastructure through machine-readable configuration files rather than clicking through web consoles or running manual commands. When infrastructure is code, it can be versioned, reviewed, tested, and rolled back — just like application code. This eliminates configuration drift (where production differs from what you think it is) and enables full infrastructure reproducibility.</p>
+<p><strong>Terraform</strong> by HashiCorp is the leading IaC tool. It uses a declarative language (HCL — HashiCorp Configuration Language) where you describe the desired end state of your infrastructure, and Terraform figures out how to get there. Terraform is <strong>cloud-agnostic</strong> — it works with 300+ providers including AWS, Azure, GCP, Kubernetes, GitHub, Datadog, and more through a provider plugin system.</p>
+<div class="arch-box"><div class="arch-title">Terraform Architecture & Execution Model</div><pre>
+  .tf files (your code)
+       │
+       │ terraform init
+       v
+  Download providers (AWS, Azure, GCP plugins)
+       │
+       │ terraform plan
+       v
+  ┌──────────────────────────────────────────────────┐
+  │              TERRAFORM PLAN                      │
+  │  Read current state (terraform.tfstate)          │
+  │  Query actual cloud state (via provider APIs)    │
+  │  Compare: desired vs actual                      │
+  │  Generate execution plan:                        │
+  │    + resource "aws_instance" "web" (CREATE)      │
+  │    ~ resource "aws_sg" "allow_http" (MODIFY)     │
+  │    - resource "aws_instance" "old" (DESTROY)     │
+  └──────────────────┬───────────────────────────────┘
+                     │ terraform apply
+                     v
+  Terraform calls AWS/Azure/GCP APIs
+  Creates/modifies/destroys resources
+                     │
+                     v
+  terraform.tfstate updated (source of truth)</pre></div>
+
+<h3>Terraform vs Ansible vs CloudFormation</h3>
+<div class="table-wrap"><table>
+<tr><th>Tool</th><th>Purpose</th><th>Approach</th><th>State</th><th>Best For</th></tr>
+<tr><td>Terraform</td><td>Provision infrastructure</td><td>Declarative</td><td>State file</td><td>Cloud resources (VMs, VPCs, RDS)</td></tr>
+<tr><td>Ansible</td><td>Configure servers</td><td>Procedural/Decl</td><td>Stateless</td><td>Software install, app deploy</td></tr>
+<tr><td>CloudFormation</td><td>AWS infra only</td><td>Declarative</td><td>CF stacks</td><td>AWS-only shops</td></tr>
+<tr><td>Pulumi</td><td>Provision infra</td><td>Declarative (code)</td><td>State file</td><td>Developers preferring Python/TS</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- 29. Terraform Basics -->
+<div class="topic-section" id="terraform-basics">
+<div class="topic-header"><div class="topic-icon-lg">🔨</div><div class="topic-header-text"><h2>Terraform Basics</h2><span class="tag">IaC</span></div></div>
+<div class="topic-body">
+<h3>HCL Syntax & Core Blocks</h3>
+<p>Terraform uses <strong>HCL (HashiCorp Configuration Language)</strong> — a human-readable configuration language designed to be easier than JSON/YAML while being machine-parseable. The four main block types are <strong>terraform</strong> (settings), <strong>provider</strong> (cloud APIs), <strong>resource</strong> (infrastructure objects), and <strong>data</strong> (read existing resources).</p>
+<pre># main.tf — Provider configuration
+terraform {
+  required_version = ">= 1.6.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"           # Allow 5.x versions only
+    }
+  }
+  backend "s3" {                   # Remote state in S3
+    bucket = "my-terraform-state"
+    key    = "production/terraform.tfstate"
+    region = "ap-south-1"
+    encrypt = true
+  }
+}
+
+provider "aws" {
+  region = var.aws_region          # Use variable
+  default_tags {
+    tags = {
+      Project     = "DevOps-Class"
+      ManagedBy   = "Terraform"
+      Environment = var.environment
+    }
+  }
+}
+
+# variables.tf — Input variables
+variable "aws_region" {
+  description = "AWS region to deploy to"
+  type        = string
+  default     = "ap-south-1"
+}
+
+variable "instance_type" {
+  type    = string
+  default = "t3.micro"
+  validation {
+    condition     = contains(["t3.micro", "t3.small", "t3.medium"], var.instance_type)
+    error_message = "Must be a valid t3 instance type."
+  }
+}
+
+variable "environment" {
+  type = string
+}
+
+# outputs.tf — Output values
+output "public_ip" {
+  description = "Public IP of web server"
+  value       = aws_instance.web.public_ip
+}
+
+output "db_endpoint" {
+  value     = aws_db_instance.main.endpoint
+  sensitive = true                # Won't print in logs
+}</pre>
+
+<h3>Creating AWS Infrastructure</h3>
+<pre># ec2.tf
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+}
+
+resource "aws_subnet" "public" {
+  count             = 2
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.${count.index}.0/24"
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+}
+
+resource "aws_security_group" "web" {
+  name   = "web-sg"
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "web" {
+  count                  = 2                         # Create 2 instances
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = var.instance_type
+  subnet_id              = aws_subnet.public[count.index].id
+  vpc_security_group_ids = [aws_security_group.web.id]
+  key_name               = "my-keypair"
+
+  user_data = &lt;&lt;-EOF
+    #!/bin/bash
+    apt-get update -y
+    apt-get install -y nginx
+    systemctl start nginx
+    echo "Hello from instance ${count.index}" &gt; /var/www/html/index.html
+  EOF
+}
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"]   # Canonical (Ubuntu)
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-*-22.04-amd64-server-*"]
+  }
+}</pre>
+
+<h3>Terraform Workflow Commands</h3>
+<pre>terraform init                        # Initialize, download providers &amp; modules
+terraform validate                    # Check syntax
+terraform fmt                         # Format code (run before git commit)
+terraform plan                        # Preview changes (dry run)
+terraform plan -out=tfplan            # Save plan to file
+terraform apply tfplan                # Apply saved plan (no confirmation needed)
+terraform apply -target=aws_instance.web  # Apply only specific resource
+terraform destroy                     # Destroy ALL resources
+terraform state list                  # List all managed resources
+terraform state show aws_instance.web  # Show resource details
+terraform import aws_instance.web i-1234567890  # Import existing resource</pre>
+</div>
+</div>
+
+<!-- 30. Terraform Modules -->
+<div class="topic-section" id="terraform-modules">
+<div class="topic-header"><div class="topic-icon-lg">📦</div><div class="topic-header-text"><h2>Terraform Modules</h2><span class="tag">IaC</span></div></div>
+<div class="topic-body">
+<h3>What are Terraform Modules?</h3>
+<p>A <strong>Terraform module</strong> is a collection of Terraform files in a directory that can be reused and shared. Modules are the primary mechanism for code reuse in Terraform — instead of writing the same VPC configuration in every project, you create a VPC module and call it with different parameters. Modules enforce consistency and reduce duplication across teams.</p>
+<div class="arch-box"><div class="arch-title">Module Architecture</div><pre>
+  infrastructure/
+  ├── main.tf           (root module — calls child modules)
+  ├── variables.tf
+  ├── outputs.tf
+  └── modules/
+      ├── vpc/          (VPC module)
+      │   ├── main.tf
+      │   ├── variables.tf
+      │   └── outputs.tf
+      ├── ec2/          (EC2 module)
+      └── rds/          (RDS module)
+
+  Root module calls child modules:
+  module "vpc" {
+    source = "./modules/vpc"
+    cidr   = "10.0.0.0/16"
+  }
+
+  module "web_servers" {
+    source      = "./modules/ec2"
+    vpc_id      = module.vpc.vpc_id     # Pass output of one module to another
+    subnet_ids  = module.vpc.public_subnet_ids
+    instance_count = 3
+  }</pre></div>
+
+<h3>Creating a Reusable Module</h3>
+<pre># modules/ec2/main.tf
+resource "aws_launch_template" "this" {
+  name_prefix   = "${var.name}-"
+  image_id      = var.ami_id
+  instance_type = var.instance_type
+  key_name      = var.key_name
+
+  network_interfaces {
+    security_groups = [aws_security_group.this.id]
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+    tags = merge(var.tags, { Name = var.name })
+  }
+}
+
+resource "aws_autoscaling_group" "this" {
+  name               = var.name
+  vpc_zone_identifier = var.subnet_ids
+  desired_capacity   = var.desired_count
+  min_size           = var.min_count
+  max_size           = var.max_count
+
+  launch_template {
+    id      = aws_launch_template.this.id
+    version = "$Latest"
+  }
+}
+
+# modules/ec2/variables.tf
+variable "name"          { type = string }
+variable "ami_id"        { type = string }
+variable "instance_type" { type = string; default = "t3.micro" }
+variable "subnet_ids"    { type = list(string) }
+variable "desired_count" { type = number; default = 2 }
+variable "min_count"     { type = number; default = 1 }
+variable "max_count"     { type = number; default = 10 }
+variable "tags"          { type = map(string); default = {} }
+
+# modules/ec2/outputs.tf
+output "asg_name" { value = aws_autoscaling_group.this.name }
+output "asg_arn"  { value = aws_autoscaling_group.this.arn }</pre>
+
+<h3>Using Public Registry Modules</h3>
+<pre># Use official AWS VPC module from Terraform Registry
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+
+  name = "production-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["ap-south-1a", "ap-south-1b", "ap-south-1c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = false
+}</pre>
+</div>
+</div>
+
+<!-- 31. Terraform State -->
+<div class="topic-section" id="terraform-state">
+<div class="topic-header"><div class="topic-icon-lg">🗄️</div><div class="topic-header-text"><h2>Terraform State &amp; Advanced</h2><span class="tag">IaC</span></div></div>
+<div class="topic-body">
+<h3>Understanding Terraform State</h3>
+<p>Terraform stores the <strong>mapping between your configuration and real-world resources</strong> in a state file (<code>terraform.tfstate</code>). This is how Terraform knows that <code>aws_instance.web</code> in your code corresponds to instance <code>i-0a1b2c3d4e</code> in AWS. Without state, Terraform would recreate every resource on every apply. The state file is the <strong>most critical file in your Terraform project</strong> — losing it means losing the ability to manage your infrastructure with Terraform.</p>
+<div class="arch-box"><div class="arch-title">Remote State Architecture with Locking</div><pre>
+  Developer A                    Developer B
+  terraform apply                terraform apply
+       │                              │
+       v                              v
+  ┌────────────────────────────────────────────────────┐
+  │              Remote State Backend (S3)             │
+  │  s3://my-tfstate/prod/terraform.tfstate            │
+  │                                                    │
+  │  ┌────────────────────────────────────────────┐   │
+  │  │            State Locking (DynamoDB)        │   │
+  │  │  LockID: prod/terraform.tfstate            │   │
+  │  │  If Dev A holds lock → Dev B gets error:  │   │
+  │  │  "Error acquiring the state lock"          │   │
+  │  │  Prevents simultaneous applies (race cond) │   │
+  │  └────────────────────────────────────────────┘   │
+  └────────────────────────────────────────────────────┘</pre></div>
+
+<h3>Remote State Backend Setup</h3>
+<pre># backend.tf
+terraform {
+  backend "s3" {
+    bucket         = "company-terraform-state"
+    key            = "production/myapp/terraform.tfstate"
+    region         = "ap-south-1"
+    encrypt        = true
+    dynamodb_table = "terraform-state-lock"     # For state locking
+  }
+}
+
+# Create the S3 bucket and DynamoDB table first (bootstrap):
+resource "aws_s3_bucket" "tf_state" {
+  bucket = "company-terraform-state"
+}
+resource "aws_s3_bucket_versioning" "tf_state" {
+  bucket = aws_s3_bucket.tf_state.id
+  versioning_configuration { status = "Enabled" }  # Versioning for state history!
+}
+resource "aws_dynamodb_table" "tf_lock" {
+  name         = "terraform-state-lock"
+  hash_key     = "LockID"
+  billing_mode = "PAY_PER_REQUEST"
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}</pre>
+
+<h3>Terraform Workspaces (Multiple Environments)</h3>
+<pre># Workspaces allow multiple state files for same config
+terraform workspace new staging
+terraform workspace new production
+terraform workspace select production
+
+# Use workspace in config:
+resource "aws_instance" "web" {
+  instance_type = terraform.workspace == "production" ? "t3.medium" : "t3.micro"
+  count         = terraform.workspace == "production" ? 3 : 1
+}</pre>
+</div>
+</div>
+
+<!-- 32. Terraform Best Practices -->
+<div class="topic-section" id="terraform-best">
+<div class="topic-header"><div class="topic-icon-lg">✅</div><div class="topic-header-text"><h2>Terraform Best Practices</h2><span class="tag">IaC</span></div></div>
+<div class="topic-body">
+<h3>Production Terraform Standards</h3>
+<div class="arch-box"><div class="arch-title">Recommended Terraform Project Structure</div><pre>
+  infrastructure/
+  ├── environments/
+  │   ├── dev/
+  │   │   ├── main.tf          (calls modules with dev values)
+  │   │   ├── variables.tf
+  │   │   └── terraform.tfvars (dev-specific values — NOT in git for prod!)
+  │   ├── staging/
+  │   └── production/
+  ├── modules/
+  │   ├── vpc/
+  │   ├── eks-cluster/
+  │   ├── rds/
+  │   └── alb/
+  └── .github/
+      └── workflows/
+          └── terraform.yml    (CI/CD for infrastructure)</pre></div>
+
+<h3>Terraform in CI/CD Pipeline</h3>
+<pre># .github/workflows/terraform.yml
+on:
+  pull_request:
+    paths: ['infrastructure/**']
+  push:
+    branches: [main]
+    paths: ['infrastructure/**']
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: infrastructure/environments/production
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan (on PR)
+        if: github.event_name == 'pull_request'
+        run: terraform plan -no-color -out=tfplan
+
+      - name: Terraform Apply (on merge to main)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan</pre>
+
+<h3>Key Best Practices</h3>
+<div class="compare-grid">
+<div class="compare-card"><h4>✅ Always Do</h4><ul><li>Use remote state with locking</li><li>Pin provider versions (~> 5.0)</li><li>Run <code>terraform fmt</code> before commit</li><li>Use modules for reusability</li><li>Tag all resources (cost tracking)</li><li>Store secrets in Vault/SSM, not .tfvars</li><li>Review <code>terraform plan</code> before apply</li></ul></div>
+<div class="compare-card"><h4>❌ Never Do</h4><ul><li>Commit <code>terraform.tfstate</code> to Git</li><li>Commit <code>*.tfvars</code> with secrets</li><li>Run <code>terraform apply</code> without plan</li><li>Use local state in team environments</li><li>Hardcode credentials in .tf files</li><li>Skip resource tagging</li><li>Import everything manually</li></ul></div>
+</div>
+<div class="warn-box"><strong>⚠️ State File Security:</strong> The <code>terraform.tfstate</code> file contains ALL your infrastructure details in plaintext, including sensitive values. Always: (1) Store in S3 with encryption, (2) Enable versioning, (3) Restrict IAM access, (4) Never commit to Git.</div>
+</div>
+</div>
+
+<!-- 33. OpenTofu -->
+<div class="topic-section" id="opentofu">
+<div class="topic-header"><div class="topic-icon-lg">🟢</div><div class="topic-header-text"><h2>OpenTofu</h2><span class="tag">IaC</span></div></div>
+<div class="topic-body">
+<h3>What is OpenTofu?</h3>
+<p>OpenTofu is a <strong>community-driven, open-source fork of Terraform</strong> created in response to HashiCorp's controversial license change in August 2023. HashiCorp changed Terraform from the Mozilla Public License (MPL 2.0 — truly open source) to the Business Source License (BSL/BUSL — restricts commercial use). This alarmed the DevOps community, leading to the formation of the <strong>OpenTofu project under the Linux Foundation</strong>.</p>
+<p>OpenTofu aims to be a <strong>drop-in replacement for Terraform</strong> — it uses the same HCL syntax, same providers, same state format, and same workflow commands. If you know Terraform, you know OpenTofu. It is maintained by a community of contributors from companies like Spacelift, Gruntwork, env0, Scalr, and many others.</p>
+<div class="arch-box"><div class="arch-title">Terraform vs OpenTofu Timeline</div><pre>
+  2014 ──── Terraform 0.1 released (MPL 2.0 license — open source)
+  2022 ──── Terraform 1.0 → 1.5 (stable, widely adopted)
+  Aug 2023 ─ HashiCorp changes license to BSL (commercial restriction)
+             "If you compete with HashiCorp, you can't use Terraform"
+             │
+             │ Community reaction
+             v
+  Sep 2023 ─ OpenTofu fork announced (Linux Foundation)
+             Supported by Gruntwork, Spacelift, env0, Scalr, etc.
+  Jan 2024 ─ OpenTofu 1.6.0 released (stable, GA)
+  2024 ──── OpenTofu adds features ahead of Terraform:
+             - State encryption
+             - Provider-defined functions
+             - Improved testing framework
+
+  OpenTofu promise: Always open source (MPL 2.0)</pre></div>
+
+<h3>Migrating from Terraform to OpenTofu</h3>
+<pre># Install OpenTofu
+curl -fsSL https://get.opentofu.org/install-opentofu.sh | sudo bash -s -- --install-method rpm
+
+# Verify
+tofu --version
+
+# Migration is simple — OpenTofu reads Terraform state
+cd your-terraform-project/
+tofu init                    # Downloads providers (same as terraform init)
+tofu plan                    # Same output as terraform plan
+tofu apply                   # Same workflow
+
+# tofu commands mirror terraform commands exactly:
+# terraform init    → tofu init
+# terraform plan    → tofu plan
+# terraform apply   → tofu apply
+# terraform destroy → tofu destroy
+# terraform import  → tofu import</pre>
+
+<h3>OpenTofu Unique Features (vs Terraform)</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>OpenTofu</th><th>Terraform</th></tr>
+<tr><td>License</td><td>MPL 2.0 (truly open)</td><td>BSL (commercial restrictions)</td></tr>
+<tr><td>State Encryption</td><td>✅ Built-in (1.7+)</td><td>❌ Only via backend</td></tr>
+<tr><td>Provider Functions</td><td>✅ Supported</td><td>❌ Not yet</td></tr>
+<tr><td>State backends</td><td>All Terraform backends</td><td>All + HCP Terraform</td></tr>
+<tr><td>Cost</td><td>Free forever</td><td>Free (BSL restrictions apply)</td></tr>
+<tr><td>Governance</td><td>Linux Foundation</td><td>HashiCorp / IBM</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- 34. Python for DevOps -->
+<div class="topic-section" id="python-devops">
+<div class="topic-header"><div class="topic-icon-lg">🐍</div><div class="topic-header-text"><h2>Python for DevOps</h2><span class="tag">Scripting</span></div></div>
+<div class="topic-body">
+<h3>Why Python for DevOps?</h3>
+<p>Python is the <strong>dominant scripting and automation language in DevOps</strong>. While bash is great for simple shell tasks, Python excels at complex automation, API integrations, data processing, and building DevOps tools. Ansible is written in Python. The AWS CLI, Azure CLI, and Google Cloud SDK all have Python SDKs. Kubernetes client, Docker SDK, Terraform CDK — all have Python support.</p>
+<p>Python's <strong>rich standard library</strong> and <strong>enormous ecosystem</strong> (PyPI) means you can write a script that calls AWS APIs, processes JSON, reads YAML config, makes HTTP calls, and sends Slack notifications in under 50 lines of code. This is why Python is a must-have skill for DevOps engineers.</p>
+<div class="arch-box"><div class="arch-title">Python DevOps Automation Architecture</div><pre>
+  Python Script / Tool
+         │
+  ┌──────┴─────────────────────────────────────────┐
+  │            Python DevOps Ecosystem              │
+  │                                                 │
+  │  boto3 ──────────────▶ AWS APIs (EC2, S3, ECS) │
+  │  kubernetes ──────────▶ K8s API Server          │
+  │  docker ──────────────▶ Docker Engine API        │
+  │  requests ────────────▶ Any REST API             │
+  │  paramiko ────────────▶ SSH to servers           │
+  │  PyYAML ──────────────▶ Parse YAML (K8s manifests│
+  │  jinja2 ──────────────▶ Template config files    │
+  │  click ───────────────▶ Build CLI tools          │
+  │  schedule ────────────▶ Cron-like task scheduling│
+  └─────────────────────────────────────────────────┘</pre></div>
+
+<h3>AWS Automation with Boto3</h3>
+<pre">import boto3
+import json
+from datetime import datetime, timedelta
+
+# Auto-stop unused EC2 instances (save costs)
+def stop_idle_instances():
+    ec2 = boto3.client('ec2', region_name='ap-south-1')
+    cloudwatch = boto3.client('cloudwatch', region_name='ap-south-1')
+
+    # Get all running instances
+    response = ec2.describe_instances(
+        Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
+    )
+
+    for reservation in response['Reservations']:
+        for instance in reservation['Instances']:
+            instance_id = instance['InstanceId']
+
+            # Check avg CPU in last hour
+            metrics = cloudwatch.get_metric_statistics(
+                Namespace='AWS/EC2',
+                MetricName='CPUUtilization',
+                Dimensions=[{'Name': 'InstanceId', 'Value': instance_id}],
+                StartTime=datetime.utcnow() - timedelta(hours=1),
+                EndTime=datetime.utcnow(),
+                Period=3600,
+                Statistics=['Average']
+            )
+
+            if metrics['Datapoints']:
+                avg_cpu = metrics['Datapoints'][0]['Average']
+                if avg_cpu < 5.0:   # Less than 5% CPU — idle!
+                    print(f"Stopping idle instance {instance_id} (CPU: {avg_cpu:.1f}%)")
+                    ec2.stop_instances(InstanceIds=[instance_id])
+
+stop_idle_instances()</pre>
+
+<h3>Kubernetes API with Python</h3>
+<pre">from kubernetes import client, config
+import sys
+
+def rolling_restart(namespace, deployment_name):
+    config.load_kube_config()          # Load ~/.kube/config
+    apps_v1 = client.AppsV1Api()
+
+    # Get current deployment
+    deployment = apps_v1.read_namespaced_deployment(
+        name=deployment_name,
+        namespace=namespace
+    )
+
+    # Add restart annotation (triggers rolling restart)
+    if not deployment.spec.template.metadata.annotations:
+        deployment.spec.template.metadata.annotations = {}
+
+    deployment.spec.template.metadata.annotations['kubectl.kubernetes.io/restartedAt'] = \
+        datetime.utcnow().isoformat()
+
+    apps_v1.patch_namespaced_deployment(
+        name=deployment_name,
+        namespace=namespace,
+        body=deployment
+    )
+    print(f"✅ Rolling restart triggered for {deployment_name}")
+
+rolling_restart('production', 'myapp')</pre>
+
+<h3>Useful Python DevOps Libraries</h3>
+<div class="table-wrap"><table>
+<tr><th>Library</th><th>Purpose</th><th>Install</th></tr>
+<tr><td>boto3</td><td>AWS SDK — EC2, S3, ECS, Lambda, etc.</td><td>pip install boto3</td></tr>
+<tr><td>kubernetes</td><td>Kubernetes API client</td><td>pip install kubernetes</td></tr>
+<tr><td>docker</td><td>Docker Engine API</td><td>pip install docker</td></tr>
+<tr><td>requests</td><td>HTTP calls to any REST API</td><td>pip install requests</td></tr>
+<tr><td>paramiko</td><td>SSH connections and SFTP</td><td>pip install paramiko</td></tr>
+<tr><td>PyYAML</td><td>Parse and write YAML</td><td>pip install pyyaml</td></tr>
+<tr><td>Jinja2</td><td>Template engine (config generation)</td><td>pip install jinja2</td></tr>
+<tr><td>click</td><td>Build CLI tools easily</td><td>pip install click</td></tr>
+<tr><td>python-dotenv</td><td>Load .env files as env vars</td><td>pip install python-dotenv</td></tr>
+<tr><td>slack-sdk</td><td>Send Slack notifications</td><td>pip install slack-sdk</td></tr>
+</table></div>
+<div class="success-box"><strong>✅ Python DevOps Tip:</strong> Always use virtual environments (<code>python -m venv .venv</code>) and pin your dependencies in <code>requirements.txt</code> (<code>pip freeze > requirements.txt</code>). This ensures your automation scripts produce consistent results across different machines and CI environments.</div>
+</div>
+</div>
+
+</div><!-- end topic-view -->
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-title">Multicloud DevOps With AI</div>
+    <div class="footer-by">Complete Notes by <strong>Veera Sir</strong></div>
+    <div class="footer-copy">34 Topics · Architecture Diagrams · Deep Theory · Production Examples</div>
+  </div>
+</footer>
+
+<script>
+function showTopic(id, title) {
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('topic-view').style.display = 'block';
+  document.querySelectorAll('.topic-section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById(id);
+  if (sec) sec.classList.add('active');
+  document.getElementById('backBtn').classList.add('visible');
+  document.getElementById('topbarTitle').textContent = title;
+  document.getElementById('topbarTitle').classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  document.getElementById('home').style.display = 'block';
+  document.getElementById('topic-view').style.display = 'none';
+  document.querySelectorAll('.topic-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('backBtn').classList.remove('visible');
+  document.getElementById('topbarTitle').classList.remove('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function filterCards(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.topic-card').forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(q) ? 'flex' : 'none';
+  });
+}
+</script>
+</body>
+</html>
